@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "NutriAppWeb": {
+    "app-cursos": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "NutriAppWeb:build:production"
+              "buildTarget": "app-cursos:build:production"
             },
             "development": {
-              "buildTarget": "NutriAppWeb:build:development"
+              "buildTarget": "app-cursos:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,5 +89,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
