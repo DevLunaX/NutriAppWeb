@@ -22,6 +22,7 @@ body {
 
 .BuscarPaciente .text {
   font-weight: 500;
+  margin-top: 15px;
 }
 
 .form-control {
@@ -102,7 +103,7 @@ body {
   border-radius: 6px;
   width: 80px;
   font-size: 14px;
-  margin-left: 5px;
+  margin-top: 10px;
 }
 
 /* Tabla inferior */
