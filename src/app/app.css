@@ -99,3 +99,8 @@ html, body {
   transition: all 0.3s ease;
 }
 
+/* En tu archivo de estilos (styles.css o el .css del componente) */
+li.active > a {
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.2); /* Un ligero sombreado para destacarlo */
+}
