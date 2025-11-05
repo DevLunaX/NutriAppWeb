@@ -1,140 +1,151 @@
+/* CAMBIO:
+  Eliminamos la regla 'body'. Esta regla no debe usarse
+  dentro de un componente de Angular, ya que no afecta al <body>
+  real y solo causa confusión.
+*/
+/*
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background-color: #f8f9fa;
-  margin: 30px;
-  color: #333;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #f8f9fa;
+  margin: 30px;
+  color: #333;
 }
+*/
+
+/* NOTA:
+  Puedes mover estilos globales como 'font-family' y 'color'
+  a tu archivo 'styles.css' principal de Angular
+  para que se apliquen a toda la aplicación.
+*/
 
 .h1 {
-  font-size: 26px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  text-align: left;
-  color: #1e293b;
+font-size:26px;
+font-weight:600;
+margin-bottom:20px;
+text-align:left;
+color:#1e293b;
+margin-top:0;
 }
 
 .BuscarPaciente {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:20px;
 }
 
 .BuscarPaciente .text {
-  font-weight: 500;
-  margin-top: 15px;
+font-weight:500;
+margin-top:15px;
 }
 
 .form-control {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 250px;
-  font-size: 14px;
+padding:6px 10px;
+border:1px solid #ccc;
+border-radius:6px;
+width:250px;
+font-size:14px;
 }
 
 .btn {
-  padding: 6px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
+padding:6px 16px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:14px;
 }
 
 .btn-success {
-  background-color: #28a745;
-  color: white;
-  transition: background-color 0.3s;
+background-color:#28a745;
+color:white;
+transition:background-color 0.3s;
 }
 
 .btn-success:hover {
-  background-color: #218838;
+background-color:#218838;
 }
 
-/* Tabla del buscador */
 .TablaBuscador {
-  margin-bottom: 20px;
+margin-bottom:20px;
 }
 
 .table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  font-size: 14px;
+width:100%;
+border-collapse:collapse;
+background-color:white;
+font-size:14px;
 }
 
 .table th {
-  background-color: #e9ecef;
-  font-weight: 600;
-  text-align: left;
-  border: 1px solid #dee2e6;
+background-color:#e9ecef;
+font-weight:600;
+text-align:left;
+border:1px solid #dee2e6;
 }
 
 .table td {
-  border: 1px solid #dee2e6;
+border:1px solid #dee2e6;
 }
 
-/* Sección de comidas */
 .Comidas {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 10px;
-  margin-bottom: 20px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+gap:10px;
+margin-bottom:20px;
 }
 
 .Comidas div {
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+background-color:#fff;
+border:1px solid #dee2e6;
+padding:10px;
+border-radius:8px;
+box-shadow:0 1px 2px rgba(0,0,0,0.05);
 }
 
 .Comidas .text {
-  font-weight: 500;
-  margin-bottom: 6px;
+font-weight:500;
+margin-bottom:6px;
 }
 
 .form-select {
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 80px;
-  font-size: 14px;
-  margin-top: 10px;
+padding:6px;
+border:1px solid #ccc;
+border-radius:6px;
+width:80px;
+font-size:14px;
+margin-top:10px;
 }
 
-/* Tabla inferior */
 .container {
-  margin-top: 20px;
+margin-top:20px;
 }
 
 .container table {
-  background-color: white;
-  border-radius: 6px;
-  overflow: hidden;
+background-color: white;
+border-radius: 6px;
+overflow: hidden;
 }
 
 .container th {
-  background-color: #198754;
-  color: white;
-  padding: 8px;
-  border: 1px solid #dee2e6;
+background-color: #198754;
+color: white;
+padding: 8px;
+border: 1px solid #dee2e6;
 }
 
 .container td {
-  padding: 8px;
-  border: 1px solid #dee2e6;
+   padding: 8px;
+border: 1px solid #dee2e6;
 }
 
 .container tr:nth-child(even) {
-  background-color: #f8f9fa;
+ background-color: #f8f9fa;
 }
 
 /* Botón guardar centrado */
 button.btn-success {
-  display: block;
-  margin: 15px 0;
-  width: 150px;
-  text-align: center;
+display: block;
+margin: 15px 0;
+width: 150px;
+text-align: center;
 }

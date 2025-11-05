@@ -1,2 +1,29 @@
-
-<p>reporte works!</p>
+<div class="card">
+    <div class="card-header">
+        <h2>Generador de Reportes</h2>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tipo-reporte">Tipo de Reporte</label>
+                    <select id="tipo-reporte" class="form-control">
+                        <option value="">Seleccionar...</option>
+                        <option value="citas-dia">Citas por día</option>
+                        <option value="citas-paciente">Historial de paciente</option>
+                        <option value="citas-doctor">Citas por doctor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fecha-inicio">Fecha Inicio</label>
+                    <input type="date" id="fecha-inicio" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="fecha-fin">Fecha Fin</label>
+                    <input type="date" id="fecha-fin" class="form-control">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Generar Reporte</button>
+        </form>
+    </div>
+</div>

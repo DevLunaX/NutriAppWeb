@@ -4,6 +4,8 @@ html, body {
   background-color: #f8f9fa;
 }
 
+
+
 /* --- Encabezado --- */
 .header {
   height: 50px;
@@ -18,7 +20,7 @@ html, body {
   display: flex;
   /* CAMBIO: Se ajusta la altura para que ocupe el 100% del alto visible
        menos la altura del header (60px). */
-  height: calc(100vh - 60px);
+ min-height: calc(100vh - 50px); /* <-- ¡CAMBIO AQUÍ! */
   /* CAMBIO: Se elimina el margen superior para que se pegue al header. */
   /* margin-top: 20px; */ /* <-- LÍNEA ELIMINADA O COMENTADA */
 }

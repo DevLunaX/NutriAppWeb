@@ -1,30 +1,318 @@
-<div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body text-black style-bold">Cursos</div>
+<div class="container m-0 p-0">
 
+  <section class="card patient-info">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre">
+      </div>
+      <div class="form-group">
+        <label for="numControl">Ingresa Numero de control:</label>
+        <input type="text" id="numControl">
+      </div>
+      <div class="form-group">
+        <label for="sexo">Sexo:</label>
+        <select id="sexo">
+          <option value="m">Masculino</option>
+          <option value="f">Femenino</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="carrera">Carrera o Area:</label>
+        <input type="text" id="carrera">
+      </div>
+      <div class="form-group">
+        <label for="edad">Edad:</label>
+        <input type="text" id="edad" class="small-input">
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">Ubicaciones</div>
+    <button class="btn btn-save">Guardar Informacion</button>
+  </section>
 
+  <section class="card patient-table">
+    <h2>Tablas de informacion</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Paciente</th>
+            <th>Nombre</th>
+            <th>Numero Control</th>
+            <th>Sexo</th>
+            <th>Edad</th>
+            <th>Carrera o Area</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Juan Perez</td>
+            <td>12345</td>
+            <td>M</td>
+            <td>22</td>
+            <td>Sistemas</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <button class="btn btn-danger">Eliminar Registro</button>
+      <button class="btn btn-primary">Guardar Cambios</button>
+    </div>
+  </section>
+
+  <section class="card diagnostico">
+    <h2>Diagnostico</h2>
+    <div class="checkbox-group">
+      <label><input type="checkbox"> Desnutrición</label>
+      <label><input type="checkbox"> Bajo Peso</label>
+      <label><input type="checkbox"> Peso Sano</label>
+      <label><input type="checkbox"> Sobrepeso</label>
+      <label><input type="checkbox"> Obesidad 1</label>
+      <label><input type="checkbox"> Obesidad 2</label>
+      <label><input type="checkbox"> Obesidad 3</label>
+      <label><input type="checkbox"> Diabetes</label>
+      <label><input type="checkbox"> Hipertension</label>
+      <label><input type="checkbox"> Dislipidemias</label>
+      <label><input type="checkbox"> Nefropatias</label>
+      <div class="form-group">
+        <label for="otros">Otros:</label>
+        <input type="text" id="otros">
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">Maestros</div>
+    <button class="btn btn-save">Guardar Diagnostico</button>
+  </section>
 
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">Alumnos</div>
+  <div class="main-grid">
 
-      </div>
+    <div class="grid-col">
+      <section class="card">
+        <h3>Control Expedientes</h3>
+        <div class="form-group-col">
+          <label for="orientaciones">Orientaciones:</label>
+          <input type="text" id="orientaciones">
+          <label for="hcn">HCN:</label>
+          <input type="text" id="hcn">
+          <label for="plan">Plan de Alimentacion:</label>
+          <select id="plan"></select>
+          <label for="primeraVez">1era vez:</label>
+          <input type="text" id="primeraVez" class="small-input">
+          <label for="seguimiento">Seguimiento:</label>
+          <input type="text" id="seguimiento" class="small-input">
+        </div>
+        <button class="btn btn-save">Guardar Expedientes</button>
+      </section>
+
+      <section class="card">
+        <h3>Antropometria Tanita</h3>
+        <div class="form-group-col">
+          <label for="grasaC">% Grasa Corporal:</label>
+          <input type="text" id="grasaC">
+          <label for="h2o">% H2o Corporal:</label>
+          <input type="text" id="h2o">
+          <label for="masaM">Masa Muscular (kg):</label>
+          <input type="text" id="masaM">
+          <label for="gastoM">Gasto Metabolico Basal:</label>
+          <input type="text" id="gastoM">
+          <label for="edadM">Edad Metabolica:</label>
+          <input type="text" id="edadM">
+          <label for="masaO">Masa Osea (kg):</label>
+          <input type="text" id="masaO">
+          <label for="grasaV">Nivel Grasa Viceral:</label>
+          <input type="text" id="grasaV">
+        </div>
+        <button class="btn btn-save">Guardar Antropometria Tanita</button>
+      </section>
+
+      <section class="card">
+        <h3>Antecedentes Medicos</h3>
+        <div class="form-group-col">
+          <label for="ahf">AHF:</label>
+          <textarea id="ahf" rows="3"></textarea>
+          <label for="morbilidad">Morbilidad actual:</label>
+          <textarea id="morbilidad" rows="3"></textarea>
+          <label for="tratamiento">Tratamiento con medicamentos:</label>
+          <textarea id="tratamiento" rows="3"></textarea>
+          <label for="alergias">Alergias o intolerancias:</label>
+          <textarea id="alergias" rows="3"></textarea>
+          <label for="tension">Tensión arterial:</label>
+          <input type="text" id="tension">
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-save">Guardar</button>
+          <button class="btn btn-clear">Limpiar</button>
+        </div>
+      </section>
     </div>
-  </div>
-</div>
+
+    <div class="grid-col">
+      <section class="card">
+        <h3>Datos del Usuario</h3>
+        <div class="form-group-col">
+          <label for="tipoUsuario">Tipo de usuario:</label>
+          <select id="tipoUsuario">
+            <option value="alumno">Alumno</option>
+          </select>
+          <label for="observaciones">Observaciones:</label>
+          <textarea id="observaciones" rows="3"></textarea>
+          <label for="originario">Originario de:</label>
+          <input type="text" id="originario">
+        </div>
+        <button class="btn btn-save">Guardar Datos</button>
+      </section>
+
+      <section class="card">
+        <h3>Hábitos de Salud</h3>
+        <div class="form-group-col">
+          <label for="actividad">Actividad Física o Disciplina Deportiva:</label>
+          <input type="text" id="actividad">
+          <label for="agua">Consumo de Agua Diaria recomendada (L):</label>
+          <input type="text" id="agua">
+          <label for="alcohol">Consumo de Alcohol:</label>
+          <select id="alcohol">
+            <option value="si">Si</option>
+            <option value="no">No</option>
+          </select>
+          <label for="cigarro">Consumo de Cigarro:</label>
+          <input type="text" id="cigarro">
+          <label for="refresco">Consumo de refresco:</label>
+          <input type="text" id="refresco">
+          <label for="jugo">Consumo de jugo embotellado:</label>
+          <input type="text" id="jugo">
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-save">Guardar</button>
+          <button class="btn btn-clear">Limpiar</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Valores de Laboratorio</h3>
+        <div class="form-row-responsive">
+          <div class="form-group-col small-group">
+            <label for="hb">Hb/Hto:</label>
+            <input type="text" id="hb">
+            <label for="glucosa">Glucosa:</label>
+            <input type="text" id="glucosa">
+            <label for="trigliceridos">Trigliceridos:</label>
+            <input type="text" id="trigliceridos">
+            <label for="sodio">Sodio:</label>
+            <input type="text" id="sodio">
+          </div>
+          <div class="form-group-col small-group">
+            <label for="linfocitos">Linfocitos:</label>
+            <input type="text" id="linfocitos">
+            <label for="colesterol">Colesterol:</label>
+            <input type="text" id="colesterol">
+            <label for="acidoUrico">Ácido Úrico:</label>
+            <input type="text" id="acidoUrico">
+          </div>
+        </div>
+        <div class="form-group-col">
+          <label for="comidas">No. COMIDAS/DIA:</label>
+          <input type="text" id="comidas">
+          <label for="cuales">¿CUALES?:</label>
+          <textarea id="cuales" rows="4"></textarea>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-save">Guardar</button>
+          <button class="btn btn-clear">Limpiar</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="card antropometria">
+      <h2>Antropometria</h2>
+      <div class="form-grid-antropo">
+        <div class="form-group">
+          <label for="peso">Peso:</label>
+          <input type="text" id="peso">
+        </div>
+        <div class="form-group">
+          <label for="pesoPerdido">Peso Perdido:</label>
+          <input type="text" id="pesoPerdido">
+        </div>
+        <div class="form-group">
+          <label for="pesoGanado">Peso Ganado:</label>
+          <input type="text" id="pesoGanado">
+        </div>
+        <div class="form-group">
+          <label for="talla">Talla(m):</label>
+          <input type="text" id="talla">
+        </div>
+        <div class="form-group">
+          <label for="cirMuneca">Cir. Muñeca:</label>
+          <input type="text" id="cirMuneca">
+        </div>
+        <div class="form-group">
+          <label for="cirBrazo">Cir. Brazo:</label>
+          <input type="text" id="cirBrazo">
+        </div>
+        <div class="form-group">
+          <label for="imc">IMC:</label>
+          <input type="text" id="imc" value="0.00" disabled>
+        </div>
+        <div class="form-group">
+          <label for="cirAbdomen">Cir. Abdomen:</label>
+          <input type="text" id="cirAbdomen">
+        </div>
+        <div class="form-group">
+          <label for="complexion">Complexion:</label>
+          <input type="text" id="complexion" value="0.00" disabled>
+        </div>
+        <div class="form-group">
+          <label for="alimentacion">Alimentacion Correcta:</label>
+          <input type="text" id="alimentacion">
+        </div>
+        <div class="form-group">
+          <label for="cirCadera">Cir. Cadera:</label>
+          <input type="text" id="cirCadera">
+        </div>
+        <div class="form-group">
+          <label for="complexionTxt">Complexion TXT:</label>
+          <input type="text" id="complexionTxt">
+        </div>
+        <div class="form-group">
+          <label for="cirCintura">Circunferencia de la cintura:</label>
+          <input type="text" id="cirCintura">
+        </div>
+        <div class="form-group">
+          <label for="pesoMax">Peso Max:</label>
+          <input type="text" id="pesoMax">
+        </div>
+        <div class="form-group">
+          <label for="pesoMin">Peso Minimo:</label>
+          <input type="text" id="pesoMin">
+        </div>
+        <div class="form-group">
+          <label for="pesoExcedido">Peso excedido:</label>
+          <input type="text" id="pesoExcedido">
+        </div>
+        <div class="form-group">
+          <label for="pesoAjustado">Peso ajustado:</label>
+          <input type="text" id="pesoAjustado">
+        </div>
+        <div class="form-group">
+          <label for="pesoDeficiente">Peso deficiente:</label>
+          <input type="text" id="pesoDeficiente">
+        </div>
+        <div class="form-group">
+          <label for="pesoSubido">Peso subido:</label>
+          <input type="text" id="pesoSubido">
+        </div>
+        <div class="form-group">
+          <label for="pesoIdeal">Peso Ideal:</label>
+          <input type="text" id="pesoIdeal">
+        </div>
+        <div class="form-group">
+          <label for="pesoMantenido">Peso Mantenido:</label>
+          <input type="text" id="pesoMantenido">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-save">Guardar Antropometria</button>
+        <button class="btn btn-clear">Limpiar Datos</button>
+      </div>
+    </section>
+
+  </div> </div> ```
