@@ -1,374 +1,175 @@
-<p class="h1">Recordatorio 24 horas</p>
+<div class="container">
 
-<div class="BuscarPaciente">
-  <p class="text">Buscar paciente (No.Control):</p>
-  <input type="text" class="form-control" placeholder="Ingrese numero de control" />
-  <button type="button" class="btn btn-success">Buscar</button>
-</div>
+  <!-- TÍTULO -->
+  <h1 class="h1">Recordatorio 24 horas</h1>
 
-
-
-<div class="TablaBuscador">
-
-  <div class="container ms-0 me-0 p-1">
-
-    <table class="table table-bordered">
-
-      <thead>
-
-        <tr>
-
-          <th>Id paciente</th>
-
-          <th>Nombre</th>
-
-          <th>No. control</th>
-
-          <th>Carrera/Area</th>
-
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        <tr>
-
-          <td>1</td>
-
-          <td>Kike</td>
-
-          <td>1224100123</td>
-
-          <td>Desarrollo de software</td>
-
-        </tr>
-
-        <tr>
-
-          <td>2</td>
-
-          <td>Mau</td>
-
-          <td>1224100456</td>
-
-          <td>Desarrollo de software</td>
-
-        </tr>
-
-        <tr>
-
-          <td>3</td>
-
-          <td>Emax</td>
-
-          <td>1224100789</td>
-
-          <td>Desarrollo de software</td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
-
+  <!-- BUSCAR PACIENTE -->
+  <div class="card BuscarPaciente">
+    <div class="form-row align-items-center">
+      <label class="text me-3">Buscar paciente (No. Control):</label>
+      <input type="text" class="form-control" placeholder="Ingrese número de control">
+      <button type="button" class="btn btn-success">Buscar</button>
+    </div>
   </div>
 
-</div>
+  <!-- TABLA DE RESULTADOS -->
+  <div class="card TablaBuscador">
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID Paciente</th>
+            <th>Nombre</th>
+            <th>No. Control</th>
+            <th>Carrera / Área</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Kike</td>
+            <td>1224100123</td>
+            <td>Desarrollo de software</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Mau</td>
+            <td>1224100456</td>
+            <td>Desarrollo de software</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Emax</td>
+            <td>1224100789</td>
+            <td>Desarrollo de software</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<div class="Comidas">
-  <div class="Desayuno">
-    <p class="text">Desayuno:</p>
-    <input type="text" class="form-control" placeholder="Ingrese su desayuno" />
-    <select class="form-select">
-      <option>00:00</option>
-      <option>01:00</option>
-      <option>02:00</option>
-      <option>03:00</option>
-      <option>04:00</option>
-      <option>05:00</option>
-      <option>06:00</option>
-      <option>07:00</option>
-      <option>08:00</option>
-      <option>09:00</option>
-      <option>10:00</option>
-      <option>11:00</option>
-      <option>12:00</option>
-      <option>13:00</option>
-      <option>14:00</option>
-      <option>15:00</option>
-      <option>16:00</option>
-      <option>17:00</option>
-      <option>18:00</option>
-      <option>19:00</option>
-      <option>20:00</option>
-      <option>21:00</option>
-      <option>22:00</option>
-      <option>23:00</option>
-      <option>24:00</option>
-    </select>
+  <!-- REGISTRO DE COMIDAS -->
+  <div class="card">
+    <h2>Registro de Comidas</h2>
+    <div class="Comidas">
+      <!-- Desayuno -->
+      <div class="meal-item">
+        <label class="text">Desayuno:</label>
+        <input type="text" class="form-control" placeholder="Ej: Avena con fruta">
+        <select class="form-select">
+          <option>00:00</option>
+          <option>01:00</option>
+          <!-- ... hasta 23:00 -->
+          <option selected>07:00</option>
+        </select>
+      </div>
+
+      <!-- Colación Matutina -->
+      <div class="meal-item">
+        <label class="text">Colación Matutina:</label>
+        <input type="text" class="form-control" placeholder="Ej: Yogur">
+        <select class="form-select">
+          <option selected>10:00</option>
+        </select>
+      </div>
+
+      <!-- Almuerzo -->
+      <div class="meal-item">
+        <label class="text">Almuerzo:</label>
+        <input type="text" class="form-control" placeholder="Ej: Pollo con arroz">
+        <select class="form-select">
+          <option selected>13:00</option>
+        </select>
+      </div>
+
+      <!-- Comida -->
+      <div class="meal-item">
+        <label class="text">Comida:</label>
+        <input type="text" class="form-control" placeholder="Ej: Ensalada">
+        <select class="form-select">
+          <option selected>15:00</option>
+        </select>
+      </div>
+
+      <!-- Merienda -->
+      <div class="meal-item">
+        <label class="text">Merienda:</label>
+        <input type="text" class="form-control" placeholder="Ej: Fruta">
+        <select class="form-select">
+          <option selected>17:00</option>
+        </select>
+      </div>
+
+      <!-- Colación Vespertina -->
+      <div class="meal-item">
+        <label class="text">Colación Vespertina:</label>
+        <input type="text" class="form-control" placeholder="Ej: Nueces">
+        <select class="form-select">
+          <option selected>19:00</option>
+        </select>
+      </div>
+
+      <!-- Cena -->
+      <div class="meal-item">
+        <label class="text">Cena:</label>
+        <input type="text" class="form-control" placeholder="Ej: Pescado">
+        <select class="form-select">
+          <option selected>21:00</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="text-center mt-3">
+      <button type="button" class="btn btn-success">Guardar Recordatorio</button>
+    </div>
   </div>
-  <div class="Colacion">
-    <p class="text">Colacion:</p>
-    <input type="text" class="form-control" placeholder="Ingrese su colacion" />
-    <select class="form-select">
-      <option>00:00</option>
-      <option>01:00</option>
-      <option>02:00</option>
-      <option>03:00</option>
-      <option>04:00</option>
-      <option>05:00</option>
-      <option>06:00</option>
-      <option>07:00</option>
-      <option>08:00</option>
-      <option>09:00</option>
-      <option>10:00</option>
-      <option>11:00</option>
-      <option>12:00</option>
-      <option>13:00</option>
-      <option>14:00</option>
-      <option>15:00</option>
-      <option>16:00</option>
-      <option>17:00</option>
-      <option>18:00</option>
-      <option>19:00</option>
-      <option>20:00</option>
-      <option>21:00</option>
-      <option>22:00</option>
-      <option>23:00</option>
-      <option>24:00</option>
-    </select>
+
+  <!-- TABLA FINAL DE REGISTROS -->
+  <div class="card">
+    <h2>Historial de Recordatorios</h2>
+    <div class="table-container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Hora</th>
+            <th>Desayuno</th>
+            <th>Hora</th>
+            <th>Colación</th>
+            <th>Hora</th>
+            <th>Almuerzo</th>
+            <th>Hora</th>
+            <th>Comida</th>
+            <th>Hora</th>
+            <th>Merienda</th>
+            <th>Hora</th>
+            <th>Colación V.</th>
+            <th>Hora</th>
+            <th>Cena</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>07:00</td>
+            <td>Shield Potion</td>
+            <td>09:30</td>
+            <td>Small Shield</td>
+            <td>12:00</td>
+            <td>Medkit</td>
+            <td>14:30</td>
+            <td>Tactical Shotgun</td>
+            <td>17:00</td>
+            <td>Chug Jug</td>
+            <td>19:00</td>
+            <td>Slurp Juice</td>
+            <td>21:00</td>
+            <td>Golden Scar</td>
+          </tr>
+          <!-- Más filas -->
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="Almuerzo">
-    <p class="text">Almuerzo:</p>
-    <input type="text" class="form-control" placeholder="Ingrese su almuerzo" />
-    <select class="form-select">
-      <option>00:00</option>
-      <option>01:00</option>
-      <option>02:00</option>
-      <option>03:00</option>
-      <option>04:00</option>
-      <option>05:00</option>
-      <option>06:00</option>
-      <option>07:00</option>
-      <option>08:00</option>
-      <option>09:00</option>
-      <option>10:00</option>
-      <option>11:00</option>
-      <option>12:00</option>
-      <option>13:00</option>
-      <option>14:00</option>
-      <option>15:00</option>
-      <option>16:00</option>
-      <option>17:00</option>
-      <option>18:00</option>
-      <option>19:00</option>
-      <option>20:00</option>
-      <option>21:00</option>
-      <option>22:00</option>
-      <option>23:00</option>
-      <option>24:00</option>
-    </select>
-  </div>
-  <div class="Comida">
-    <p class="text">Comida:</p>
-    <input type="text" class="form-control" placeholder="Ingrese su comida" />
-    <select class="form-select">
-      <option>00:00</option>
-      <option>01:00</option>
-      <option>02:00</option>
-      <option>03:00</option>
-      <option>04:00</option>
-      <option>05:00</option>
-      <option>06:00</option>
-      <option>07:00</option>
-      <option>08:00</option>
-      <option>09:00</option>
-      <option>10:00</option>
-      <option>11:00</option>
-      <option>12:00</option>
-      <option>13:00</option>
-      <option>14:00</option>
-      <option>15:00</option>
-      <option>16:00</option>
-      <option>17:00</option>
-      <option>18:00</option>
-      <option>19:00</option>
-      <option>20:00</option>
-      <option>21:00</option>
-      <option>22:00</option>
-      <option>23:00</option>
-      <option>24:00</option>
-    </select>
-  </div>
-  <div class="Merienda">
-    <p class="text">Merienda:</p>
-    <input type="text" class="form-control" placeholder="Ingrese su merienda" />
-    <select class="form-select">
-      <option>00:00</option>
-      <option>01:00</option>
-      <option>02:00</option>
-      <option>03:00</option>
-      <option>04:00</option>
-      <option>05:00</option>
-      <option>06:00</option>
-      <option>07:00</option>
-      <option>08:00</option>
-      <option>09:00</option>
-      <option>10:00</option>
-      <option>11:00</option>
-      <option>12:00</option>
-      <option>13:00</option>
-      <option>14:00</option>
-      <option>15:00</option>
-      <option>16:00</option>
-      <option>17:00</option>
-      <option>18:00</option>
-      <option>19:00</option>
-      <option>20:00</option>
-      <option>21:00</option>
-      <option>22:00</option>
-      <option>23:00</option>
-      <option>24:00</option>
-    </select>
-  </div>
-  <div class="ColacionV">
-    <p class="text">Colacion vespertina:</p>
-    <input type="text" class="form-control" placeholder="Ingrese su colacion vespertina" />
-    <select class="form-select">
-      <option>00:00</option>
-      <option>01:00</option>
-      <option>02:00</option>
-      <option>03:00</option>
-      <option>04:00</option>
-      <option>05:00</option>
-      <option>06:00</option>
-      <option>07:00</option>
-      <option>08:00</option>
-      <option>09:00</option>
-      <option>10:00</option>
-      <option>11:00</option>
-      <option>12:00</option>
-      <option>13:00</option>
-      <option>14:00</option>
-      <option>15:00</option>
-      <option>16:00</option>
-      <option>17:00</option>
-      <option>18:00</option>
-      <option>19:00</option>
-      <option>20:00</option>
-      <option>21:00</option>
-      <option>22:00</option>
-      <option>23:00</option>
-      <option>24:00</option>
-    </select>
-  </div>
-  <div class="Cena">
-    <p class="text">Cena:</p>
-    <input type="text" class="form-control" placeholder="Ingrese su cena" />
-    <select class="form-select">
-      <option>00:00</option>
-      <option>01:00</option>
-      <option>02:00</option>
-      <option>03:00</option>
-      <option>04:00</option>
-      <option>05:00</option>
-      <option>06:00</option>
-      <option>07:00</option>
-      <option>08:00</option>
-      <option>09:00</option>
-      <option>10:00</option>
-      <option>11:00</option>
-      <option>12:00</option>
-      <option>13:00</option>
-      <option>14:00</option>
-      <option>15:00</option>
-      <option>16:00</option>
-      <option>17:00</option>
-      <option>18:00</option>
-      <option>19:00</option>
-      <option>20:00</option>
-      <option>21:00</option>
-      <option>22:00</option>
-      <option>23:00</option>
-      <option>24:00</option>
-    </select>
-  </div>
-</div>
-<button type="button" class="btn btn-success">Guardar</button>
-<div class="container ms-0 me-0 p-1">
-  <table class="table table-bordered ">
-    <thead>
-      <tr>
-        <th>id_paciente</th>
-        <th>hora</th>
-        <th>desayuno</th>
-        <th>hora</th>
-        <th>colacion matutina</th>
-        <th>hora</th>
-        <th>almuerzo</th>
-        <th>hora</th>
-        <th>comida</th>
-        <th>hora</th>
-        <th>merienda</th>
-        <th>hora</th>
-        <th>colacion vespertina</th>
-        <th>hora</th>
-        <th>cena</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>07:00</td>
-        <td>Shield Potion</td>
-        <td>09:30</td>
-        <td>Small Shield</td>
-        <td>12:00</td>
-        <td>Medkit</td>
-        <td>14:30</td>
-        <td>Tactical Shotgun</td>
-        <td>17:00</td>
-        <td>Chug Jug</td>
-        <td>19:00</td>
-        <td>Slurp Juice</td>
-        <td>21:00</td>
-        <td>Golden Scar</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>07:00</td>
-        <td>Shield Potion</td>
-        <td>09:30</td>
-        <td>Small Shield</td>
-        <td>12:00</td>
-        <td>Medkit</td>
-        <td>14:30</td>
-        <td>Tactical Shotgun</td>
-        <td>17:00</td>
-        <td>Chug Jug</td>
-        <td>19:00</td>
-        <td>Slurp Juice</td>
-        <td>21:00</td>
-        <td>Golden Scar</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>08:00</td>
-        <td>Fortnite Burger</td>
-        <td>10:30</td>
-        <td>Boogie Bomb</td>
-        <td>13:00</td>
-        <td>Launch Pad</td>
-        <td>15:30</td>
-        <td>Storm Flip</td>
-        <td>18:00</td>
-        <td>Slap Juice</td>
-        <td>20:00</td>
-        <td>Chuck Splashes</td>
-        <td>22:00</td>
-        <td>Mythic Hammer</td>
-      </tr>
-    </tbody>
-  </table>
+
 </div>

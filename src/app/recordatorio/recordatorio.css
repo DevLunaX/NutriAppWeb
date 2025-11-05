@@ -1,151 +1,179 @@
-/* CAMBIO:
-  Eliminamos la regla 'body'. Esta regla no debe usarse
-  dentro de un componente de Angular, ya que no afecta al <body>
-  real y solo causa confusión.
-*/
-/*
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background-color: #f8f9fa;
-  margin: 30px;
-  color: #333;
-}
-*/
-
-/* NOTA:
-  Puedes mover estilos globales como 'font-family' y 'color'
-  a tu archivo 'styles.css' principal de Angular
-  para que se apliquen a toda la aplicación.
-*/
-
-.h1 {
-font-size:26px;
-font-weight:600;
-margin-bottom:20px;
-text-align:left;
-color:#1e293b;
-margin-top:0;
-}
-
-.BuscarPaciente {
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:20px;
-}
-
-.BuscarPaciente .text {
-font-weight:500;
-margin-top:15px;
-}
-
-.form-control {
-padding:6px 10px;
-border:1px solid #ccc;
-border-radius:6px;
-width:250px;
-font-size:14px;
-}
-
-.btn {
-padding:6px 16px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-font-size:14px;
-}
-
-.btn-success {
-background-color:#28a745;
-color:white;
-transition:background-color 0.3s;
-}
-
-.btn-success:hover {
-background-color:#218838;
-}
-
-.TablaBuscador {
-margin-bottom:20px;
-}
-
-.table {
-width:100%;
-border-collapse:collapse;
-background-color:white;
-font-size:14px;
-}
-
-.table th {
-background-color:#e9ecef;
-font-weight:600;
-text-align:left;
-border:1px solid #dee2e6;
-}
-
-.table td {
-border:1px solid #dee2e6;
-}
-
-.Comidas {
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-gap:10px;
-margin-bottom:20px;
-}
-
-.Comidas div {
-background-color:#fff;
-border:1px solid #dee2e6;
-padding:10px;
-border-radius:8px;
-box-shadow:0 1px 2px rgba(0,0,0,0.05);
-}
-
-.Comidas .text {
-font-weight:500;
-margin-bottom:6px;
-}
-
-.form-select {
-padding:6px;
-border:1px solid #ccc;
-border-radius:6px;
-width:80px;
-font-size:14px;
-margin-top:10px;
+/* ==== GENERALES ==== */
+:host {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: block;
+  background-color: #f4f6f9;
 }
 
 .container {
-margin-top:20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
 }
 
-.container table {
-background-color: white;
-border-radius: 6px;
-overflow: hidden;
+/* ==== TÍTULOS ==== */
+.h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #5a2d82;
+  margin: 0 0 1.5rem 0;
+  border-bottom: 3px solid #6a1b9a;
+  padding-bottom: 0.5rem;
 }
 
-.container th {
-background-color: #198754;
-color: white;
-padding: 8px;
-border: 1px solid #dee2e6;
+/* ==== TARJETAS ==== */
+.card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 }
 
-.container td {
-   padding: 8px;
-border: 1px solid #dee2e6;
+/* ==== FORMULARIOS ==== */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.container tr:nth-child(even) {
- background-color: #f8f9fa;
+.form-control, .form-select {
+  padding: 0.65rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
-/* Botón guardar centrado */
-button.btn-success {
-display: block;
-margin: 15px 0;
-width: 150px;
-text-align: center;
+.form-control:focus, .form-select:focus {
+  border-color: #6a1b9a;
+  box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.15);
+  outline: none;
+}
+
+.text {
+  font-weight: 600;
+  color: #444;
+  margin: 0;
+  min-width: 140px;
+}
+
+/* ==== COMIDAS GRID ==== */
+.Comidas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.meal-item {
+  background: #fdfdff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.meal-item:hover {
+  border-color: #6a1b9a;
+  box-shadow: 0 2px 8px rgba(106, 27, 154, 0.1);
+}
+
+.meal-item .form-control {
+  flex: 1;
+}
+
+.meal-item .form-select {
+  width: 90px;
+  align-self: flex-end;
+}
+
+/* ==== BOTONES ==== */
+.btn {
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+/* ==== TABLAS ==== */
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.table th {
+  background-color: #6a1b9a;
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.8rem 1rem;
+}
+
+.table td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f5fb;
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 992px) {
+  .Comidas {
+    grid-template-columns: 1fr;
+  }
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .text {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .meal-item .form-select {
+    width: 100%;
+  }
+  .btn {
+    width: 100%;
+  }
 }
