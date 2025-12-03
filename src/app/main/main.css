@@ -1,0 +1,265 @@
+/* ==== GENERALES ==== */
+:host {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: block;
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* ==== TARJETAS ==== */
+.card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.card h2, .card h3 {
+  color: #5a2d82;
+  border-bottom: 2px solid #6a1b9a;
+  padding-bottom: 0.5rem;
+  margin: 0 0 1.2rem 0;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  color: #444;
+}
+
+/* ==== FORMULARIOS ==== */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-end;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.4rem;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  background-color: #fdfdff;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #6a1b9a;
+  box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.15);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.small-input {
+  max-width: 90px;
+}
+
+/* ==== BOTONES ==== */
+/* ==== BOTONES (MÁS PEQUEÑOS Y COMPACTOS) ==== */
+.btn {
+  padding: 0.45rem 0.85rem;     /* Antes: 0.7rem 1.4rem */
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 0.82rem;           /* Antes: 0.9rem */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.4rem;
+  min-width: 75px;              /* Evita que se vean muy estrechos */
+  text-align: center;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Colores */
+.btn-save {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-danger, .btn-clear {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-group {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ==== TABLAS ==== */
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+}
+
+.patient-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.patient-table th,
+.patient-table td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.patient-table th {
+  background-color: #f8f5fb;
+  font-weight: 600;
+  color: #5a2d82;
+}
+
+.patient-table tbody tr:hover {
+  background-color: #f9f6fd;
+}
+
+.table-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+/* ==== CHECKBOX GROUP ==== */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  accent-color: #6a1b9a;
+}
+
+/* ==== GRID LAYOUT ==== */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.grid-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.antropometria {
+  grid-column: 1 / -1;
+}
+
+/* ==== ANTROPOMETRIA GRID ==== */
+.form-grid-antropo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+.form-grid-antropo .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-grid-antropo label {
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 992px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-row {
+    flex-direction: column;
+  }
+  .form-group {
+    min-width: 100%;
+  }
+  .checkbox-group {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-grid-antropo {
+    grid-template-columns: 1fr;
+  }
+  .btn-group {
+    flex-direction: column;
+  }
+  .btn {
+    width: 100%;
+  }
+  .table-actions {
+    flex-direction: column;
+  }
+}

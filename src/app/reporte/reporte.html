@@ -1,69 +1,29 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generar Reporte del Alumno</title>
-
-</head>
-
-<body>
-  <div class="container">
-    <h1>Generar Reporte del alumno</h1>
-
-    <form id="reportForm">
-      <div class="form-group">
-        <label for="controlNumber">Número de control</label>
-        <input type="text" id="controlNumber" placeholder="" value="1224190703" required>
-      </div>
-
-      <button type="submit" class="generate-btn">
-        Generar Reporte
-      </button>
-    </form>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <button class="modal-close" onclick="closeModal()">×</button>
-      <div class="modal-header">
-        <div class="modal-icon">ℹ</div>
-        <h3>Message</h3>
-      </div>
-      <div class="modal-content">
-        <p id="modalPath">Reporte generado en: C:\Users\user\Escritorio\alumno_1224190703.xlsx</p>
-        <button class="modal-btn" onclick="closeModal()">OK</button>
-      </div>
+<div class="card">
+    <div class="card-header">
+        <h2>Generador de Reportes</h2>
     </div>
-  </div>
-
-  <script>
-    const form = document.getElementById('reportForm');
-    const modalOverlay = document.getElementById('modalOverlay');
-    const modalPath = document.getElementById('modalPath');
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const controlNumber = document.getElementById('controlNumber').value;
-
-      if (controlNumber.trim()) {
-        modalPath.textContent = `Reporte generado en: C:\\Users\\user\\Escritorio\\alumno_${controlNumber}.xlsx`;
-        modalOverlay.classList.add('active');
-      }
-    });
-
-    function closeModal() {
-      modalOverlay.classList.remove('active');
-    }
-
-    modalOverlay.addEventListener('click', (e) => {
-      if (e.target === modalOverlay) {
-        closeModal();
-      }
-    });
-  </script>
-</body>
-<link rel="stylesheet" href="reporte.css">
-</html>
+    <div class="card-body">
+        <form>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tipo-reporte">Tipo de Reporte</label>
+                    <select id="tipo-reporte" class="form-control">
+                        <option value="">Seleccionar...</option>
+                        <option value="citas-dia">Citas por día</option>
+                        <option value="citas-paciente">Historial de paciente</option>
+                        <option value="citas-doctor">Citas por doctor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fecha-inicio">Fecha Inicio</label>
+                    <input type="date" id="fecha-inicio" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="fecha-fin">Fecha Fin</label>
+                    <input type="date" id="fecha-fin" class="form-control">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Generar Reporte</button>
+        </form>
+    </div>
+</div>

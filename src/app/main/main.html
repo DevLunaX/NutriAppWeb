@@ -1,30 +1,150 @@
-<div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body text-black style-bold">Cursos</div>
+<div class="container">
 
+  <!-- INFORMACIÓN DEL PACIENTE -->
+  <section class="card patient-info">
+    <h2>Información del Paciente</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" placeholder="Juan Pérez">
+      </div>
+      <div class="form-group">
+        <label for="numControl">Número de Control:</label>
+        <input type="text" id="numControl" placeholder="12345678">
+      </div>
+      <div class="form-group">
+        <label for="sexo">Sexo:</label>
+        <select id="sexo">
+          <option value="">Seleccionar</option>
+          <option value="m">Masculino</option>
+          <option value="f">Femenino</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="carrera">Carrera o Área:</label>
+        <input type="text" id="carrera" placeholder="Sistemas">
+      </div>
+      <div class="form-group">
+        <label for="edad">Edad:</label>
+        <input type="text" id="edad" class="small-input" placeholder="22">
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">Ubicaciones</div>
+    <div class="btn-group">
+      <button class="btn btn-save">Guardar Información</button>
+    </div>
+  </section>
 
+  <!-- TABLA DE PACIENTES -->
+  <section class="card patient-table">
+    <h2>Pacientes Registrados</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Núm. Control</th>
+            <th>Sexo</th>
+            <th>Edad</th>
+            <th>Carrera</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Juan Pérez</td>
+            <td>12345</td>
+            <td>M</td>
+            <td>22</td>
+            <td>Sistemas</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <button class="btn btn-danger">Eliminar</button>
+      <button class="btn btn-primary">Guardar Cambios</button>
+    </div>
+  </section>
+
+  <!-- DIAGNÓSTICO -->
+  <section class="card diagnostico">
+    <h2>Diagnóstico</h2>
+    <div class="checkbox-group">
+      <label><input type="checkbox"> Desnutrición</label>
+      <label><input type="checkbox"> Bajo Peso</label>
+      <label><input type="checkbox"> Peso Sano</label>
+      <label><input type="checkbox"> Sobrepeso</label>
+      <label><input type="checkbox"> Obesidad 1</label>
+      <label><input type="checkbox"> Obesidad 2</label>
+      <label><input type="checkbox"> Obesidad 3</label>
+      <label><input type="checkbox"> Diabetes</label>
+      <label><input type="checkbox"> Hipertensión</label>
+      <label><input type="checkbox"> Dislipidemias</label>
+      <label><input type="checkbox"> Nefropatías</label>
+      <div class="form-group">
+        <label for="otros">Otros:</label>
+        <input type="text" id="otros" placeholder="Especificar...">
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">Maestros</div>
+    <button class="btn btn-save">Guardar Diagnóstico</button>
+  </section>
 
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">Alumnos</div>
+  <!-- GRID DE SECCIONES -->
+  <div class="main-grid">
 
-      </div>
+    <!-- COLUMNA 1 -->
+    <div class="grid-col">
+      <section class="card">
+        <h3>Control de Expedientes</h3>
+        <div class="form-group-col">
+          <label for="orientaciones">Orientaciones:</label>
+          <input type="text" id="orientaciones">
+          <label for="hcn">HCN:</label>
+          <input type="text" id="hcn">
+          <label for="plan">Plan de Alimentación:</label>
+          <select id="plan"><option>Seleccionar plan...</option></select>
+          <label for="primeraVez">1era vez:</label>
+          <input type="text" id="primeraVez" class="small-input">
+          <label for="seguimiento">Seguimiento:</label>
+          <input type="text" id="seguimiento" class="small-input">
+        </div>
+        <button class="btn btn-save btn-xs">Guardar</button>
+      </section>
+
+      <!-- Más secciones... (igual que antes) -->
+      <!-- (Puedes copiar y pegar las demás secciones) -->
+
     </div>
+
+    <!-- COLUMNA 2 -->
+    <div class="grid-col">
+      <!-- Mismo formato -->
+    </div>
+
+    <!-- ANTROPOMETRÍA (full width) -->
+    <section class="card antropometria">
+      <h2>Antropometría</h2>
+      <div class="form-grid-antropo">
+        <div class="form-group">
+          <label for="peso">Peso (kg):</label>
+          <input type="text" id="peso">
+        </div>
+        <div class="form-group">
+          <label for="talla">Talla (m):</label>
+          <input type="text" id="talla">
+        </div>
+        <div class="form-group">
+          <label for="imc">IMC:</label>
+          <input type="text" id="imc" value="0.00" disabled>
+        </div>
+        <!-- ... más campos ... -->
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-save">Guardar Antropometría</button>
+        <button class="btn btn-clear">Limpiar</button>
+      </div>
+    </section>
+
   </div>
 </div>
