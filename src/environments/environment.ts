@@ -1,3 +1,6 @@
+// Development environment configuration
+// Note: In production, these values should be managed through environment variables
+// or a secure configuration system. Never commit sensitive API keys to version control.
 export const environment = {
   production: false,
   supabaseUrl: 'https://tolhxmhllqgvsyrdycua.supabase.co',

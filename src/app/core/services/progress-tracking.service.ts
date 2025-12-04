@@ -6,12 +6,7 @@ import {
   ProgressTrackingCreate,
   ProgressTrackingUpdate,
 } from '../models/progress-tracking.model';
-
-export interface ServiceResponse<T> {
-  success: boolean;
-  data?: T;
-  message?: string;
-}
+import { ServiceResponse } from '../models/service-response.model';
 
 @Injectable({
   providedIn: 'root',

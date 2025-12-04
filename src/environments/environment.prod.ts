@@ -1,3 +1,6 @@
+// Production environment configuration
+// IMPORTANT: In production, replace these values with environment variables
+// or use a secure configuration system. Do not commit actual production credentials.
 export const environment = {
   production: true,
   supabaseUrl: 'https://tolhxmhllqgvsyrdycua.supabase.co',

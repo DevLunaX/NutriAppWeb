@@ -6,12 +6,7 @@ import {
   ConsultationCreate,
   ConsultationUpdate,
 } from '../models/consultation.model';
-
-export interface ServiceResponse<T> {
-  success: boolean;
-  data?: T;
-  message?: string;
-}
+import { ServiceResponse } from '../models/service-response.model';
 
 @Injectable({
   providedIn: 'root',

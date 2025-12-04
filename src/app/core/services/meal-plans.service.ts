@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { AuthService } from './auth.service';
 import { MealPlan, MealPlanCreate, MealPlanUpdate } from '../models/meal-plan.model';
-
-export interface ServiceResponse<T> {
-  success: boolean;
-  data?: T;
-  message?: string;
-}
+import { ServiceResponse } from '../models/service-response.model';
 
 @Injectable({
   providedIn: 'root',
