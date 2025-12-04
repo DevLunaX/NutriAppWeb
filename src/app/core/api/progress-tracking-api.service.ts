@@ -10,6 +10,7 @@ import {
 /**
  * REST API service for Progress Tracking
  * Provides HTTP-like endpoints: GET, POST, PUT, DELETE
+ * No authentication required - open access
  */
 @Injectable({
   providedIn: 'root',
@@ -19,19 +20,13 @@ export class ProgressTrackingApiService extends BaseApiService {
 
   /**
    * GET /api/progress-tracking
-   * Retrieves all progress entries for the authenticated nutritionist
+   * Retrieves all progress entries
    */
   async getAll(): Promise<ApiResponse<ProgressTracking[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     try {
       const { data, error } = await this.supabase
         .from(this.endpoint)
         .select('*')
-        .eq('nutritionist_id', userId)
         .order('tracking_date', { ascending: false });
 
       if (error) {
@@ -49,11 +44,6 @@ export class ProgressTrackingApiService extends BaseApiService {
    * Retrieves a specific progress entry by ID
    */
   async getById(id: string): Promise<ApiResponse<ProgressTracking>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Progress tracking ID is required');
     }
@@ -63,7 +53,6 @@ export class ProgressTrackingApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('id', id)
-        .eq('nutritionist_id', userId)
         .single();
 
       if (error) {
@@ -84,11 +73,6 @@ export class ProgressTrackingApiService extends BaseApiService {
    * Retrieves all progress entries for a specific patient
    */
   async getByPatientId(patientId: string): Promise<ApiResponse<ProgressTracking[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!patientId) {
       return this.badRequest('Patient ID is required');
     }
@@ -98,7 +82,6 @@ export class ProgressTrackingApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('patient_id', patientId)
-        .eq('nutritionist_id', userId)
         .order('tracking_date', { ascending: false });
 
       if (error) {
@@ -116,11 +99,6 @@ export class ProgressTrackingApiService extends BaseApiService {
    * Retrieves the latest progress entry for a specific patient
    */
   async getLatestByPatientId(patientId: string): Promise<ApiResponse<ProgressTracking>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!patientId) {
       return this.badRequest('Patient ID is required');
     }
@@ -130,7 +108,6 @@ export class ProgressTrackingApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('patient_id', patientId)
-        .eq('nutritionist_id', userId)
         .order('tracking_date', { ascending: false })
         .limit(1)
         .single();
@@ -157,11 +134,6 @@ export class ProgressTrackingApiService extends BaseApiService {
     startDate: string,
     endDate: string
   ): Promise<ApiResponse<ProgressTracking[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!patientId) {
       return this.badRequest('Patient ID is required');
     }
@@ -175,7 +147,6 @@ export class ProgressTrackingApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('patient_id', patientId)
-        .eq('nutritionist_id', userId)
         .gte('tracking_date', startDate)
         .lte('tracking_date', endDate)
         .order('tracking_date', { ascending: true });
@@ -195,11 +166,6 @@ export class ProgressTrackingApiService extends BaseApiService {
    * Creates a new progress entry
    */
   async create(progress: ProgressTrackingCreate): Promise<ApiResponse<ProgressTracking>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!progress.patient_id) {
       return this.badRequest('Patient ID is required');
     }
@@ -213,7 +179,6 @@ export class ProgressTrackingApiService extends BaseApiService {
         .from(this.endpoint)
         .insert({
           ...progress,
-          nutritionist_id: userId,
         })
         .select()
         .single();
@@ -233,11 +198,6 @@ export class ProgressTrackingApiService extends BaseApiService {
    * Updates an existing progress entry
    */
   async update(id: string, updates: ProgressTrackingUpdate): Promise<ApiResponse<ProgressTracking>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Progress tracking ID is required');
     }
@@ -250,7 +210,6 @@ export class ProgressTrackingApiService extends BaseApiService {
           updated_at: new Date().toISOString(),
         })
         .eq('id', id)
-        .eq('nutritionist_id', userId)
         .select()
         .single();
 
@@ -272,11 +231,6 @@ export class ProgressTrackingApiService extends BaseApiService {
    * Deletes a progress entry
    */
   async delete(id: string): Promise<ApiResponse<null>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Progress tracking ID is required');
     }
@@ -285,8 +239,7 @@ export class ProgressTrackingApiService extends BaseApiService {
       const { error } = await this.supabase
         .from(this.endpoint)
         .delete()
-        .eq('id', id)
-        .eq('nutritionist_id', userId);
+        .eq('id', id);
 
       if (error) {
         return this.handleSupabaseError(error);

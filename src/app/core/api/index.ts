@@ -3,6 +3,7 @@
  * 
  * This module provides a REST-like API abstraction over the Supabase services.
  * All API services return standardized ApiResponse objects with HTTP status codes.
+ * No authentication required - open access to all data.
  * 
  * Usage Example:
  * ```typescript
@@ -28,7 +29,6 @@ export * from './api.model';
 export * from './base-api.service';
 
 // API Services
-export * from './auth-api.service';
 export * from './patients-api.service';
 export * from './consultations-api.service';
 export * from './meal-plans-api.service';

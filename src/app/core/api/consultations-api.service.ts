@@ -10,6 +10,7 @@ import {
 /**
  * REST API service for Consultations
  * Provides HTTP-like endpoints: GET, POST, PUT, DELETE
+ * No authentication required - open access
  */
 @Injectable({
   providedIn: 'root',
@@ -19,19 +20,13 @@ export class ConsultationsApiService extends BaseApiService {
 
   /**
    * GET /api/consultations
-   * Retrieves all consultations for the authenticated nutritionist
+   * Retrieves all consultations
    */
   async getAll(): Promise<ApiResponse<Consultation[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     try {
       const { data, error } = await this.supabase
         .from(this.endpoint)
         .select('*')
-        .eq('nutritionist_id', userId)
         .order('consultation_date', { ascending: false });
 
       if (error) {
@@ -49,11 +44,6 @@ export class ConsultationsApiService extends BaseApiService {
    * Retrieves a specific consultation by ID
    */
   async getById(id: string): Promise<ApiResponse<Consultation>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Consultation ID is required');
     }
@@ -63,7 +53,6 @@ export class ConsultationsApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('id', id)
-        .eq('nutritionist_id', userId)
         .single();
 
       if (error) {
@@ -84,11 +73,6 @@ export class ConsultationsApiService extends BaseApiService {
    * Retrieves all consultations for a specific patient
    */
   async getByPatientId(patientId: string): Promise<ApiResponse<Consultation[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!patientId) {
       return this.badRequest('Patient ID is required');
     }
@@ -98,7 +82,6 @@ export class ConsultationsApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('patient_id', patientId)
-        .eq('nutritionist_id', userId)
         .order('consultation_date', { ascending: false });
 
       if (error) {
@@ -116,11 +99,6 @@ export class ConsultationsApiService extends BaseApiService {
    * Creates a new consultation
    */
   async create(consultation: ConsultationCreate): Promise<ApiResponse<Consultation>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!consultation.patient_id) {
       return this.badRequest('Patient ID is required');
     }
@@ -134,7 +112,6 @@ export class ConsultationsApiService extends BaseApiService {
         .from(this.endpoint)
         .insert({
           ...consultation,
-          nutritionist_id: userId,
         })
         .select()
         .single();
@@ -154,11 +131,6 @@ export class ConsultationsApiService extends BaseApiService {
    * Updates an existing consultation
    */
   async update(id: string, updates: ConsultationUpdate): Promise<ApiResponse<Consultation>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Consultation ID is required');
     }
@@ -171,7 +143,6 @@ export class ConsultationsApiService extends BaseApiService {
           updated_at: new Date().toISOString(),
         })
         .eq('id', id)
-        .eq('nutritionist_id', userId)
         .select()
         .single();
 
@@ -193,11 +164,6 @@ export class ConsultationsApiService extends BaseApiService {
    * Deletes a consultation
    */
   async delete(id: string): Promise<ApiResponse<null>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Consultation ID is required');
     }
@@ -206,8 +172,7 @@ export class ConsultationsApiService extends BaseApiService {
       const { error } = await this.supabase
         .from(this.endpoint)
         .delete()
-        .eq('id', id)
-        .eq('nutritionist_id', userId);
+        .eq('id', id);
 
       if (error) {
         return this.handleSupabaseError(error);
@@ -224,11 +189,6 @@ export class ConsultationsApiService extends BaseApiService {
    * Retrieves upcoming consultations within the specified number of days
    */
   async getUpcoming(days: number = 7): Promise<ApiResponse<Consultation[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     const today = new Date();
     const futureDate = new Date();
     futureDate.setDate(today.getDate() + days);
@@ -237,7 +197,6 @@ export class ConsultationsApiService extends BaseApiService {
       const { data, error } = await this.supabase
         .from(this.endpoint)
         .select('*')
-        .eq('nutritionist_id', userId)
         .gte('consultation_date', today.toISOString())
         .lte('consultation_date', futureDate.toISOString())
         .order('consultation_date', { ascending: true });

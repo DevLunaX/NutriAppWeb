@@ -6,6 +6,7 @@ import { MealPlan, MealPlanCreate, MealPlanUpdate } from '../models/meal-plan.mo
 /**
  * REST API service for Meal Plans
  * Provides HTTP-like endpoints: GET, POST, PUT, DELETE
+ * No authentication required - open access
  */
 @Injectable({
   providedIn: 'root',
@@ -15,19 +16,13 @@ export class MealPlansApiService extends BaseApiService {
 
   /**
    * GET /api/meal-plans
-   * Retrieves all meal plans for the authenticated nutritionist
+   * Retrieves all meal plans
    */
   async getAll(): Promise<ApiResponse<MealPlan[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     try {
       const { data, error } = await this.supabase
         .from(this.endpoint)
         .select('*')
-        .eq('nutritionist_id', userId)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -45,11 +40,6 @@ export class MealPlansApiService extends BaseApiService {
    * Retrieves a specific meal plan by ID
    */
   async getById(id: string): Promise<ApiResponse<MealPlan>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Meal plan ID is required');
     }
@@ -59,7 +49,6 @@ export class MealPlansApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('id', id)
-        .eq('nutritionist_id', userId)
         .single();
 
       if (error) {
@@ -80,11 +69,6 @@ export class MealPlansApiService extends BaseApiService {
    * Retrieves all meal plans for a specific patient
    */
   async getByPatientId(patientId: string): Promise<ApiResponse<MealPlan[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!patientId) {
       return this.badRequest('Patient ID is required');
     }
@@ -94,7 +78,6 @@ export class MealPlansApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('patient_id', patientId)
-        .eq('nutritionist_id', userId)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -112,11 +95,6 @@ export class MealPlansApiService extends BaseApiService {
    * Retrieves the active meal plan for a specific patient
    */
   async getActiveByPatientId(patientId: string): Promise<ApiResponse<MealPlan>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!patientId) {
       return this.badRequest('Patient ID is required');
     }
@@ -126,7 +104,6 @@ export class MealPlansApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('patient_id', patientId)
-        .eq('nutritionist_id', userId)
         .eq('is_active', true)
         .single();
 
@@ -148,11 +125,6 @@ export class MealPlansApiService extends BaseApiService {
    * Creates a new meal plan
    */
   async create(mealPlan: MealPlanCreate): Promise<ApiResponse<MealPlan>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!mealPlan.patient_id) {
       return this.badRequest('Patient ID is required');
     }
@@ -167,15 +139,13 @@ export class MealPlansApiService extends BaseApiService {
         await this.supabase
           .from(this.endpoint)
           .update({ is_active: false })
-          .eq('patient_id', mealPlan.patient_id)
-          .eq('nutritionist_id', userId);
+          .eq('patient_id', mealPlan.patient_id);
       }
 
       const { data, error } = await this.supabase
         .from(this.endpoint)
         .insert({
           ...mealPlan,
-          nutritionist_id: userId,
         })
         .select()
         .single();
@@ -195,11 +165,6 @@ export class MealPlansApiService extends BaseApiService {
    * Updates an existing meal plan
    */
   async update(id: string, updates: MealPlanUpdate): Promise<ApiResponse<MealPlan>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Meal plan ID is required');
     }
@@ -218,7 +183,6 @@ export class MealPlansApiService extends BaseApiService {
             .from(this.endpoint)
             .update({ is_active: false })
             .eq('patient_id', currentPlan.patient_id)
-            .eq('nutritionist_id', userId)
             .neq('id', id);
         }
       }
@@ -230,7 +194,6 @@ export class MealPlansApiService extends BaseApiService {
           updated_at: new Date().toISOString(),
         })
         .eq('id', id)
-        .eq('nutritionist_id', userId)
         .select()
         .single();
 
@@ -252,11 +215,6 @@ export class MealPlansApiService extends BaseApiService {
    * Deletes a meal plan
    */
   async delete(id: string): Promise<ApiResponse<null>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Meal plan ID is required');
     }
@@ -265,8 +223,7 @@ export class MealPlansApiService extends BaseApiService {
       const { error } = await this.supabase
         .from(this.endpoint)
         .delete()
-        .eq('id', id)
-        .eq('nutritionist_id', userId);
+        .eq('id', id);
 
       if (error) {
         return this.handleSupabaseError(error);

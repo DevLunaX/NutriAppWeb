@@ -6,6 +6,7 @@ import { Patient, PatientCreate, PatientUpdate } from '../models/patient.model';
 /**
  * REST API service for Patients
  * Provides HTTP-like endpoints: GET, POST, PUT, DELETE
+ * No authentication required - open access to patient data
  */
 @Injectable({
   providedIn: 'root',
@@ -15,19 +16,13 @@ export class PatientsApiService extends BaseApiService {
 
   /**
    * GET /api/patients
-   * Retrieves all patients for the authenticated nutritionist
+   * Retrieves all patients
    */
   async getAll(): Promise<ApiResponse<Patient[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     try {
       const { data, error } = await this.supabase
         .from(this.endpoint)
         .select('*')
-        .eq('nutritionist_id', userId)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -45,11 +40,6 @@ export class PatientsApiService extends BaseApiService {
    * Retrieves a specific patient by ID
    */
   async getById(id: string): Promise<ApiResponse<Patient>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Patient ID is required');
     }
@@ -59,7 +49,6 @@ export class PatientsApiService extends BaseApiService {
         .from(this.endpoint)
         .select('*')
         .eq('id', id)
-        .eq('nutritionist_id', userId)
         .single();
 
       if (error) {
@@ -80,11 +69,6 @@ export class PatientsApiService extends BaseApiService {
    * Creates a new patient
    */
   async create(patient: PatientCreate): Promise<ApiResponse<Patient>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!patient.full_name) {
       return this.badRequest('Patient name is required');
     }
@@ -94,7 +78,6 @@ export class PatientsApiService extends BaseApiService {
         .from(this.endpoint)
         .insert({
           ...patient,
-          nutritionist_id: userId,
         })
         .select()
         .single();
@@ -114,11 +97,6 @@ export class PatientsApiService extends BaseApiService {
    * Updates an existing patient
    */
   async update(id: string, updates: PatientUpdate): Promise<ApiResponse<Patient>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Patient ID is required');
     }
@@ -131,7 +109,6 @@ export class PatientsApiService extends BaseApiService {
           updated_at: new Date().toISOString(),
         })
         .eq('id', id)
-        .eq('nutritionist_id', userId)
         .select()
         .single();
 
@@ -153,11 +130,6 @@ export class PatientsApiService extends BaseApiService {
    * Deletes a patient
    */
   async delete(id: string): Promise<ApiResponse<null>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!id) {
       return this.badRequest('Patient ID is required');
     }
@@ -166,8 +138,7 @@ export class PatientsApiService extends BaseApiService {
       const { error } = await this.supabase
         .from(this.endpoint)
         .delete()
-        .eq('id', id)
-        .eq('nutritionist_id', userId);
+        .eq('id', id);
 
       if (error) {
         return this.handleSupabaseError(error);
@@ -184,11 +155,6 @@ export class PatientsApiService extends BaseApiService {
    * Searches patients by name or email
    */
   async search(query: string): Promise<ApiResponse<Patient[]>> {
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      return this.unauthorized();
-    }
-
     if (!query || query.trim().length === 0) {
       return this.badRequest('Search query is required');
     }
@@ -202,7 +168,6 @@ export class PatientsApiService extends BaseApiService {
       const { data, error } = await this.supabase
         .from(this.endpoint)
         .select('*')
-        .eq('nutritionist_id', userId)
         .or(`full_name.ilike.%${sanitizedQuery}%,email.ilike.%${sanitizedQuery}%`)
         .order('full_name', { ascending: true });
 

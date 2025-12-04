@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from '../services/supabase.service';
-import { AuthService } from '../services/auth.service';
 import { ApiResponse, ApiError, HttpMethod } from './api.model';
 
 /**
  * Base API service that provides REST-like interface over Supabase
  * All API services extend this class to get common functionality
+ * No authentication required - open access
  */
 @Injectable({
   providedIn: 'root',
 })
 export class BaseApiService {
   constructor(
-    protected supabase: SupabaseService,
-    protected authService: AuthService
+    protected supabase: SupabaseService
   ) {}
 
   /**
@@ -61,13 +60,6 @@ export class BaseApiService {
   }
 
   /**
-   * Creates an unauthorized response (401)
-   */
-  protected unauthorized<T>(): ApiResponse<T> {
-    return this.error('UNAUTHORIZED', 'User not authenticated', 401);
-  }
-
-  /**
    * Creates a not found response (404)
    */
   protected notFound<T>(resource: string): ApiResponse<T> {
@@ -79,20 +71,6 @@ export class BaseApiService {
    */
   protected badRequest<T>(message: string): ApiResponse<T> {
     return this.error('BAD_REQUEST', message, 400);
-  }
-
-  /**
-   * Gets the current authenticated user ID
-   */
-  protected getCurrentUserId(): string | null {
-    return this.authService.currentUser()?.id ?? null;
-  }
-
-  /**
-   * Checks if user is authenticated
-   */
-  protected isAuthenticated(): boolean {
-    return this.getCurrentUserId() !== null;
   }
 
   /**
@@ -144,9 +122,6 @@ export class BaseApiService {
       // Permission errors
       '42501': 403, // Insufficient privilege
       PGRST301: 403, // Row-level security violation
-      // Authentication errors
-      invalid_grant: 401,
-      invalid_credentials: 401,
     };
 
     return errorStatusMap[code] || 500;

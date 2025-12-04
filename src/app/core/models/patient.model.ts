@@ -1,6 +1,6 @@
 export interface Patient {
   id: string;
-  nutritionist_id: string;
+  nutritionist_id?: string;
   full_name: string;
   control_number?: string;
   email?: string;
