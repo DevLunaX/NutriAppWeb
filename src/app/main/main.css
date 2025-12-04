@@ -365,3 +365,24 @@ button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* ==== CHECKBOX INLINE ==== */
+.checkbox-inline {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+
+.checkbox-inline label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.checkbox-inline input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}

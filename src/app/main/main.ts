@@ -1,8 +1,14 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PatientsApiService } from '../core/api/patients-api.service';
-import { Patient, PatientCreate, PatientDiagnosis, MedicalRecords } from '../core/models/patient.model';
+import { PacientesApiService } from '../core/api/pacientes-api.service';
+import { DiagnosticosApiService } from '../core/api/diagnosticos-api.service';
+import { ControlExpedientesApiService } from '../core/api/control-expedientes-api.service';
+import { AntropometriaApiService } from '../core/api/antropometria-api.service';
+import { Paciente, PacienteCreate } from '../core/models/paciente.model';
+import { DiagnosticoUpdate } from '../core/models/diagnostico.model';
+import { ControlExpedienteUpdate } from '../core/models/control-expediente.model';
+import { AntropometriaUpdate } from '../core/models/antropometria.model';
 
 @Component({
   selector: 'app-main',
@@ -13,187 +19,207 @@ import { Patient, PatientCreate, PatientDiagnosis, MedicalRecords } from '../cor
 })
 export class Main implements OnInit {
   // Patient list
-  patients = signal<Patient[]>([]);
-  selectedPatient = signal<Patient | null>(null);
+  pacientes = signal<Paciente[]>([]);
+  selectedPaciente = signal<Paciente | null>(null);
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
 
   // Form fields for patient info
-  patientForm = signal<PatientCreate>({
-    full_name: '',
-    control_number: '',
-    gender: undefined,
-    career: '',
-    age: undefined,
+  pacienteForm = signal<PacienteCreate>({
+    nombre: '',
+    numero_control: '',
+    sexo: undefined,
+    carrera: '',
+    edad: undefined,
   });
 
   // Diagnosis checkboxes
-  diagnosis = signal<PatientDiagnosis>({
-    malnutrition: false,
-    underweight: false,
-    healthy_weight: false,
-    overweight: false,
-    obesity_1: false,
-    obesity_2: false,
-    obesity_3: false,
+  diagnostico = signal<DiagnosticoUpdate>({
+    desnutricion: false,
+    bajo_peso: false,
+    peso_sano: false,
+    sobrepeso: false,
+    obesidad_1: false,
+    obesidad_2: false,
+    obesidad_3: false,
     diabetes: false,
-    hypertension: false,
-    dyslipidemia: false,
-    nephropathy: false,
-    other: '',
+    hipertension: false,
+    dislipidemias: false,
+    nefropatias: false,
+    otros: '',
   });
 
-  // Medical records
-  medicalRecords = signal<MedicalRecords>({
-    orientations: '',
+  // Control expedientes
+  controlExpediente = signal<ControlExpedienteUpdate>({
+    orientaciones: '',
     hcn: '',
-    meal_plan_type: '',
-    first_visit: '',
-    follow_up: '',
+    plan_alimentacion: '',
+    primera_vez: false,
+    seguimiento: false,
   });
 
   // Anthropometry
-  anthropometry = signal({
-    weight_kg: undefined as number | undefined,
-    height_cm: undefined as number | undefined,
-    bmi: 0,
-    body_fat_percentage: undefined as number | undefined,
-    muscle_mass_kg: undefined as number | undefined,
-    waist_cm: undefined as number | undefined,
-    hip_cm: undefined as number | undefined,
+  antropometria = signal({
+    peso: undefined as number | undefined,
+    talla: undefined as number | undefined,
+    imc: 0,
   });
 
-  // Computed BMI
+  // Computed BMI (talla in meters for IMC calculation)
   calculatedBmi = computed(() => {
-    const anthro = this.anthropometry();
-    if (anthro.weight_kg && anthro.height_cm) {
-      const heightM = anthro.height_cm / 100;
-      return +(anthro.weight_kg / (heightM * heightM)).toFixed(2);
+    const anthro = this.antropometria();
+    if (anthro.peso && anthro.talla) {
+      // talla is in meters (e.g., 1.75)
+      return +(anthro.peso / (anthro.talla * anthro.talla)).toFixed(2);
     }
     return 0;
   });
 
-  constructor(private patientsApi: PatientsApiService) {}
+  constructor(
+    private pacientesApi: PacientesApiService,
+    private diagnosticosApi: DiagnosticosApiService,
+    private controlExpedientesApi: ControlExpedientesApiService,
+    private antropometriaApi: AntropometriaApiService
+  ) {}
 
   ngOnInit(): void {
-    this.loadPatients();
+    this.loadPacientes();
   }
 
-  async loadPatients(): Promise<void> {
+  async loadPacientes(): Promise<void> {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
     try {
-      const response = await this.patientsApi.getAll();
+      const response = await this.pacientesApi.getAll();
       if (response.status === 200 && response.data) {
-        this.patients.set(response.data);
+        this.pacientes.set(response.data);
       } else {
-        this.errorMessage.set(response.error?.message || 'Error loading patients');
+        this.errorMessage.set(response.error?.message || 'Error cargando pacientes');
       }
     } catch (error) {
-      this.errorMessage.set('Error connecting to server');
+      this.errorMessage.set('Error conectando al servidor');
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  selectPatient(patient: Patient): void {
-    this.selectedPatient.set(patient);
+  async selectPaciente(paciente: Paciente): Promise<void> {
+    this.selectedPaciente.set(paciente);
+    this.isLoading.set(true);
     
     // Load patient data into forms
-    this.patientForm.set({
-      full_name: patient.full_name,
-      control_number: patient.control_number || '',
-      gender: patient.gender,
-      career: patient.career || '',
-      age: patient.age,
+    this.pacienteForm.set({
+      nombre: paciente.nombre,
+      numero_control: paciente.numero_control,
+      sexo: paciente.sexo,
+      carrera: paciente.carrera || '',
+      edad: paciente.edad,
     });
 
-    this.diagnosis.set(patient.diagnosis || {
-      malnutrition: false,
-      underweight: false,
-      healthy_weight: false,
-      overweight: false,
-      obesity_1: false,
-      obesity_2: false,
-      obesity_3: false,
-      diabetes: false,
-      hypertension: false,
-      dyslipidemia: false,
-      nephropathy: false,
-      other: '',
-    });
+    try {
+      // Load diagnosis
+      const diagResponse = await this.diagnosticosApi.getByPacienteId(paciente.id);
+      if (diagResponse.status === 200 && diagResponse.data) {
+        this.diagnostico.set({
+          desnutricion: diagResponse.data.desnutricion,
+          bajo_peso: diagResponse.data.bajo_peso,
+          peso_sano: diagResponse.data.peso_sano,
+          sobrepeso: diagResponse.data.sobrepeso,
+          obesidad_1: diagResponse.data.obesidad_1,
+          obesidad_2: diagResponse.data.obesidad_2,
+          obesidad_3: diagResponse.data.obesidad_3,
+          diabetes: diagResponse.data.diabetes,
+          hipertension: diagResponse.data.hipertension,
+          dislipidemias: diagResponse.data.dislipidemias,
+          nefropatias: diagResponse.data.nefropatias,
+          otros: diagResponse.data.otros || '',
+        });
+      } else {
+        this.resetDiagnostico();
+      }
 
-    this.medicalRecords.set(patient.medical_records || {
-      orientations: '',
-      hcn: '',
-      meal_plan_type: '',
-      first_visit: '',
-      follow_up: '',
-    });
+      // Load control expediente
+      const controlResponse = await this.controlExpedientesApi.getByPacienteId(paciente.id);
+      if (controlResponse.status === 200 && controlResponse.data) {
+        this.controlExpediente.set({
+          orientaciones: controlResponse.data.orientaciones || '',
+          hcn: controlResponse.data.hcn || '',
+          plan_alimentacion: controlResponse.data.plan_alimentacion || '',
+          primera_vez: controlResponse.data.primera_vez,
+          seguimiento: controlResponse.data.seguimiento,
+        });
+      } else {
+        this.resetControlExpediente();
+      }
 
-    this.anthropometry.set({
-      weight_kg: patient.weight_kg,
-      height_cm: patient.height_cm,
-      bmi: patient.bmi || 0,
-      body_fat_percentage: patient.body_fat_percentage,
-      muscle_mass_kg: patient.muscle_mass_kg,
-      waist_cm: patient.waist_cm,
-      hip_cm: patient.hip_cm,
-    });
+      // Load anthropometry
+      const anthroResponse = await this.antropometriaApi.getByPacienteId(paciente.id);
+      if (anthroResponse.status === 200 && anthroResponse.data) {
+        this.antropometria.set({
+          peso: anthroResponse.data.peso,
+          talla: anthroResponse.data.talla,
+          imc: anthroResponse.data.imc || 0,
+        });
+      } else {
+        this.resetAntropometria();
+      }
 
-    this.showSuccess('Paciente seleccionado: ' + patient.full_name);
+      this.showSuccess('Paciente seleccionado: ' + paciente.nombre);
+    } catch (error) {
+      this.showError('Error cargando datos del paciente');
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
-  async savePatientInfo(): Promise<void> {
-    const form = this.patientForm();
+  async savePacienteInfo(): Promise<void> {
+    const form = this.pacienteForm();
     
-    if (!form.full_name?.trim()) {
+    if (!form.nombre?.trim()) {
       this.showError('El nombre del paciente es requerido');
       return;
     }
 
+    if (!form.numero_control?.trim()) {
+      this.showError('El número de control es requerido');
+      return;
+    }
+
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
     try {
-      const patientData: PatientCreate = {
-        ...form,
-        diagnosis: this.diagnosis(),
-        medical_records: this.medicalRecords(),
-        ...this.anthropometry(),
-      };
-
-      if (this.selectedPatient()) {
+      if (this.selectedPaciente()) {
         // Update existing patient
-        const response = await this.patientsApi.update(this.selectedPatient()!.id, patientData);
+        const response = await this.pacientesApi.update(this.selectedPaciente()!.id, form);
         if (response.status === 200) {
           this.showSuccess('Paciente actualizado correctamente');
-          await this.loadPatients();
+          await this.loadPacientes();
         } else {
-          this.showError(response.error?.message || 'Error updating patient');
+          this.showError(response.error?.message || 'Error actualizando paciente');
         }
       } else {
         // Create new patient
-        const response = await this.patientsApi.create(patientData);
+        const response = await this.pacientesApi.create(form);
         if (response.status === 201) {
           this.showSuccess('Paciente creado correctamente');
           this.clearForm();
-          await this.loadPatients();
+          await this.loadPacientes();
         } else {
-          this.showError(response.error?.message || 'Error creating patient');
+          this.showError(response.error?.message || 'Error creando paciente');
         }
       }
     } catch (error) {
-      this.showError('Error connecting to server');
+      this.showError('Error conectando al servidor');
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  async saveDiagnosis(): Promise<void> {
-    if (!this.selectedPatient()) {
+  async saveDiagnostico(): Promise<void> {
+    if (!this.selectedPaciente()) {
       this.showError('Seleccione un paciente primero');
       return;
     }
@@ -201,25 +227,25 @@ export class Main implements OnInit {
     this.isLoading.set(true);
 
     try {
-      const response = await this.patientsApi.update(this.selectedPatient()!.id, {
-        diagnosis: this.diagnosis(),
-      });
+      const response = await this.diagnosticosApi.upsertByPacienteId(
+        this.selectedPaciente()!.id,
+        this.diagnostico()
+      );
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         this.showSuccess('Diagnóstico guardado correctamente');
-        await this.loadPatients();
       } else {
-        this.showError(response.error?.message || 'Error saving diagnosis');
+        this.showError(response.error?.message || 'Error guardando diagnóstico');
       }
     } catch (error) {
-      this.showError('Error connecting to server');
+      this.showError('Error conectando al servidor');
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  async saveMedicalRecords(): Promise<void> {
-    if (!this.selectedPatient()) {
+  async saveControlExpediente(): Promise<void> {
+    if (!this.selectedPaciente()) {
       this.showError('Seleccione un paciente primero');
       return;
     }
@@ -227,58 +253,69 @@ export class Main implements OnInit {
     this.isLoading.set(true);
 
     try {
-      const response = await this.patientsApi.update(this.selectedPatient()!.id, {
-        medical_records: this.medicalRecords(),
-      });
+      const response = await this.controlExpedientesApi.upsertByPacienteId(
+        this.selectedPaciente()!.id,
+        this.controlExpediente()
+      );
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         this.showSuccess('Control de expedientes guardado correctamente');
-        await this.loadPatients();
       } else {
-        this.showError(response.error?.message || 'Error saving medical records');
+        this.showError(response.error?.message || 'Error guardando control de expedientes');
       }
     } catch (error) {
-      this.showError('Error connecting to server');
+      this.showError('Error conectando al servidor');
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  async saveAnthropometry(): Promise<void> {
-    if (!this.selectedPatient()) {
+  async saveAntropometria(): Promise<void> {
+    if (!this.selectedPaciente()) {
       this.showError('Seleccione un paciente primero');
+      return;
+    }
+
+    const anthro = this.antropometria();
+    if (!anthro.peso || anthro.peso <= 0) {
+      this.showError('El peso debe ser mayor a 0');
+      return;
+    }
+
+    if (!anthro.talla || anthro.talla <= 0) {
+      this.showError('La talla debe ser mayor a 0');
       return;
     }
 
     this.isLoading.set(true);
 
     try {
-      const anthro = this.anthropometry();
-      const response = await this.patientsApi.update(this.selectedPatient()!.id, {
-        weight_kg: anthro.weight_kg,
-        height_cm: anthro.height_cm,
-        bmi: this.calculatedBmi(),
-        body_fat_percentage: anthro.body_fat_percentage,
-        muscle_mass_kg: anthro.muscle_mass_kg,
-        waist_cm: anthro.waist_cm,
-        hip_cm: anthro.hip_cm,
-      });
+      const response = await this.antropometriaApi.upsertByPacienteId(
+        this.selectedPaciente()!.id,
+        {
+          peso: anthro.peso,
+          talla: anthro.talla,
+        }
+      );
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
+        // Update the IMC from the response (calculated by database trigger)
+        if (response.data) {
+          this.antropometria.update(a => ({ ...a, imc: response.data!.imc }));
+        }
         this.showSuccess('Antropometría guardada correctamente');
-        await this.loadPatients();
       } else {
-        this.showError(response.error?.message || 'Error saving anthropometry');
+        this.showError(response.error?.message || 'Error guardando antropometría');
       }
     } catch (error) {
-      this.showError('Error connecting to server');
+      this.showError('Error conectando al servidor');
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  async deletePatient(): Promise<void> {
-    if (!this.selectedPatient()) {
+  async deletePaciente(): Promise<void> {
+    if (!this.selectedPaciente()) {
       this.showError('Seleccione un paciente primero');
       return;
     }
@@ -290,89 +327,89 @@ export class Main implements OnInit {
     this.isLoading.set(true);
 
     try {
-      const response = await this.patientsApi.delete(this.selectedPatient()!.id);
+      const response = await this.pacientesApi.delete(this.selectedPaciente()!.id);
       if (response.status === 204) {
         this.showSuccess('Paciente eliminado correctamente');
         this.clearForm();
-        await this.loadPatients();
+        await this.loadPacientes();
       } else {
-        this.showError(response.error?.message || 'Error deleting patient');
+        this.showError(response.error?.message || 'Error eliminando paciente');
       }
     } catch (error) {
-      this.showError('Error connecting to server');
+      this.showError('Error conectando al servidor');
     } finally {
       this.isLoading.set(false);
     }
   }
 
   clearForm(): void {
-    this.selectedPatient.set(null);
-    this.patientForm.set({
-      full_name: '',
-      control_number: '',
-      gender: undefined,
-      career: '',
-      age: undefined,
+    this.selectedPaciente.set(null);
+    this.pacienteForm.set({
+      nombre: '',
+      numero_control: '',
+      sexo: undefined,
+      carrera: '',
+      edad: undefined,
     });
-    this.diagnosis.set({
-      malnutrition: false,
-      underweight: false,
-      healthy_weight: false,
-      overweight: false,
-      obesity_1: false,
-      obesity_2: false,
-      obesity_3: false,
+    this.resetDiagnostico();
+    this.resetControlExpediente();
+    this.resetAntropometria();
+  }
+
+  private resetDiagnostico(): void {
+    this.diagnostico.set({
+      desnutricion: false,
+      bajo_peso: false,
+      peso_sano: false,
+      sobrepeso: false,
+      obesidad_1: false,
+      obesidad_2: false,
+      obesidad_3: false,
       diabetes: false,
-      hypertension: false,
-      dyslipidemia: false,
-      nephropathy: false,
-      other: '',
-    });
-    this.medicalRecords.set({
-      orientations: '',
-      hcn: '',
-      meal_plan_type: '',
-      first_visit: '',
-      follow_up: '',
-    });
-    this.anthropometry.set({
-      weight_kg: undefined,
-      height_cm: undefined,
-      bmi: 0,
-      body_fat_percentage: undefined,
-      muscle_mass_kg: undefined,
-      waist_cm: undefined,
-      hip_cm: undefined,
+      hipertension: false,
+      dislipidemias: false,
+      nefropatias: false,
+      otros: '',
     });
   }
 
-  clearAnthropometry(): void {
-    this.anthropometry.set({
-      weight_kg: undefined,
-      height_cm: undefined,
-      bmi: 0,
-      body_fat_percentage: undefined,
-      muscle_mass_kg: undefined,
-      waist_cm: undefined,
-      hip_cm: undefined,
+  private resetControlExpediente(): void {
+    this.controlExpediente.set({
+      orientaciones: '',
+      hcn: '',
+      plan_alimentacion: '',
+      primera_vez: false,
+      seguimiento: false,
     });
+  }
+
+  private resetAntropometria(): void {
+    this.antropometria.set({
+      peso: undefined,
+      talla: undefined,
+      imc: 0,
+    });
+  }
+
+  clearAntropometria(): void {
+    this.resetAntropometria();
   }
 
   // Form update helpers
-  updatePatientForm(field: keyof PatientCreate, value: unknown): void {
-    this.patientForm.update(form => ({ ...form, [field]: value }));
+  updatePacienteForm(field: keyof PacienteCreate, value: unknown): void {
+    this.pacienteForm.update(form => ({ ...form, [field]: value }));
   }
 
-  updateDiagnosis(field: keyof PatientDiagnosis, value: unknown): void {
-    this.diagnosis.update(d => ({ ...d, [field]: value }));
+  updateDiagnostico(field: keyof DiagnosticoUpdate, value: unknown): void {
+    this.diagnostico.update(d => ({ ...d, [field]: value }));
   }
 
-  updateMedicalRecords(field: keyof MedicalRecords, value: unknown): void {
-    this.medicalRecords.update(mr => ({ ...mr, [field]: value }));
+  updateControlExpediente(field: keyof ControlExpedienteUpdate, value: unknown): void {
+    this.controlExpediente.update(ce => ({ ...ce, [field]: value }));
   }
 
-  updateAnthropometry(field: 'weight_kg' | 'height_cm' | 'bmi' | 'body_fat_percentage' | 'muscle_mass_kg' | 'waist_cm' | 'hip_cm', value: unknown): void {
-    this.anthropometry.update(a => ({ ...a, [field]: value }));
+  updateAntropometria(field: 'peso' | 'talla' | 'imc', value: unknown): void {
+    this.antropometria.update(a => ({ ...a, [field]: value }));
   }
 
   private showError(message: string): void {
@@ -387,11 +424,10 @@ export class Main implements OnInit {
     setTimeout(() => this.successMessage.set(null), 3000);
   }
 
-  getGenderDisplay(gender?: string): string {
-    switch (gender) {
-      case 'male': return 'M';
-      case 'female': return 'F';
-      case 'other': return 'O';
+  getSexoDisplay(sexo?: string): string {
+    switch (sexo) {
+      case 'M': return 'M';
+      case 'F': return 'F';
       default: return '-';
     }
   }

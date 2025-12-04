@@ -7,14 +7,14 @@
  * 
  * Usage Example:
  * ```typescript
- * import { PatientsApiService } from './core/api';
+ * import { PacientesApiService } from './core/api';
  * 
- * constructor(private patientsApi: PatientsApiService) {}
+ * constructor(private pacientesApi: PacientesApiService) {}
  * 
- * async loadPatients() {
- *   const response = await this.patientsApi.getAll();
+ * async loadPacientes() {
+ *   const response = await this.pacientesApi.getAll();
  *   if (response.status === 200) {
- *     this.patients = response.data;
+ *     this.pacientes = response.data;
  *   } else {
  *     console.error(response.error?.message);
  *   }
@@ -28,7 +28,14 @@ export * from './api.model';
 // Base Service
 export * from './base-api.service';
 
-// API Services
+// New API Services (matching new database schema)
+export * from './pacientes-api.service';
+export * from './diagnosticos-api.service';
+export * from './control-expedientes-api.service';
+export * from './antropometria-api.service';
+export * from './citas-api.service';
+
+// Legacy API Services (kept for backward compatibility)
 export * from './patients-api.service';
 export * from './consultations-api.service';
 export * from './meal-plans-api.service';
