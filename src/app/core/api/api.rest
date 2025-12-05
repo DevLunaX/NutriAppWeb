@@ -1,0 +1,428 @@
+### ============================================
+### API REST - NutriApp Supabase Testing
+### ============================================
+### Usar con la extensión REST Client de VS Code
+### Instalar: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+### ============================================
+
+@baseUrl = https://tolhxmhllqgvsyrdycua.supabase.co/rest/v1
+@apiKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvbGh4bWhsbHFndnN5cmR5Y3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4NDc5OTAsImV4cCI6MjA4MDQyMzk5MH0.z53ZB6w2Co36Zc7NkQNM1hDFubOymSf4FbtLSjuVGe0
+
+### ============================================
+### PACIENTES - CRUD Operations
+### ============================================
+
+### GET - Obtener todos los pacientes activos
+GET {{baseUrl}}/pacientes?activo=eq.true&order=fecha_registro.desc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+###
+
+### GET - Obtener paciente por ID
+GET {{baseUrl}}/pacientes?id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Buscar paciente por número de control
+GET {{baseUrl}}/pacientes?numero_control=eq.12345678
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Buscar pacientes por nombre (parcial)
+GET {{baseUrl}}/pacientes?nombre=ilike.*Juan*
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### POST - Crear nuevo paciente
+POST {{baseUrl}}/pacientes
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "nombre": "Test Paciente",
+  "numero_control": "TEST001",
+  "sexo": "M",
+  "edad": 25,
+  "carrera": "Ingeniería",
+  "activo": true
+}
+
+###
+
+### PATCH - Actualizar paciente
+PATCH {{baseUrl}}/pacientes?id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "nombre": "Juan Pérez Actualizado",
+  "edad": 23
+}
+
+###
+
+### DELETE - Soft delete (desactivar paciente)
+PATCH {{baseUrl}}/pacientes?id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "activo": false
+}
+
+###
+
+### DELETE - Eliminar paciente permanentemente (¡CUIDADO!)
+# DELETE {{baseUrl}}/pacientes?id=eq.1
+# apikey: {{apiKey}}
+# Authorization: Bearer {{apiKey}}
+
+### ============================================
+### DIAGNOSTICOS - CRUD Operations
+### ============================================
+
+### GET - Obtener diagnóstico de un paciente
+GET {{baseUrl}}/diagnosticos?paciente_id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Obtener todos los diagnósticos
+GET {{baseUrl}}/diagnosticos?order=fecha_diagnostico.desc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### POST - Crear diagnóstico para paciente
+POST {{baseUrl}}/diagnosticos
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "paciente_id": 1,
+  "desnutricion": false,
+  "bajo_peso": false,
+  "peso_sano": true,
+  "sobrepeso": false,
+  "obesidad_1": false,
+  "obesidad_2": false,
+  "obesidad_3": false,
+  "diabetes": false,
+  "hipertension": false,
+  "dislipidemias": false,
+  "nefropatias": false,
+  "otros": ""
+}
+
+###
+
+### PATCH - Actualizar diagnóstico
+PATCH {{baseUrl}}/diagnosticos?paciente_id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "diabetes": true,
+  "hipertension": true,
+  "otros": "Observación adicional"
+}
+
+###
+
+### DELETE - Eliminar diagnóstico
+# DELETE {{baseUrl}}/diagnosticos?id=eq.1
+# apikey: {{apiKey}}
+# Authorization: Bearer {{apiKey}}
+
+### ============================================
+### CONTROL_EXPEDIENTES - CRUD Operations
+### ============================================
+
+### GET - Obtener control de expediente de un paciente
+GET {{baseUrl}}/control_expedientes?paciente_id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Obtener todos los controles de expedientes
+GET {{baseUrl}}/control_expedientes?order=fecha_registro.desc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### POST - Crear control de expediente
+POST {{baseUrl}}/control_expedientes
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "paciente_id": 1,
+  "orientaciones": "Ejercicio regular, dieta balanceada",
+  "hcn": "HCN-001",
+  "plan_alimentacion": "Plan bajo en sodio",
+  "primera_vez": true,
+  "seguimiento": false
+}
+
+###
+
+### PATCH - Actualizar control de expediente
+PATCH {{baseUrl}}/control_expedientes?paciente_id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "orientaciones": "Nueva orientación actualizada",
+  "seguimiento": true
+}
+
+###
+
+### DELETE - Eliminar control de expediente
+# DELETE {{baseUrl}}/control_expedientes?id=eq.1
+# apikey: {{apiKey}}
+# Authorization: Bearer {{apiKey}}
+
+### ============================================
+### ANTROPOMETRIA - CRUD Operations
+### ============================================
+
+### GET - Obtener mediciones de un paciente
+GET {{baseUrl}}/antropometria?paciente_id=eq.1&order=fecha_medicion.desc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Obtener última medición de un paciente
+GET {{baseUrl}}/antropometria?paciente_id=eq.1&order=fecha_medicion.desc&limit=1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Obtener todas las mediciones
+GET {{baseUrl}}/antropometria?order=fecha_medicion.desc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### POST - Crear nueva medición (IMC se calcula automáticamente por trigger)
+POST {{baseUrl}}/antropometria
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "paciente_id": 1,
+  "peso": 70.5,
+  "talla": 1.75
+}
+
+###
+
+### PATCH - Actualizar medición
+PATCH {{baseUrl}}/antropometria?id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "peso": 69.0,
+  "talla": 1.75
+}
+
+###
+
+### DELETE - Eliminar medición
+# DELETE {{baseUrl}}/antropometria?id=eq.1
+# apikey: {{apiKey}}
+# Authorization: Bearer {{apiKey}}
+
+### ============================================
+### CITAS - CRUD Operations
+### ============================================
+
+### GET - Obtener todas las citas
+GET {{baseUrl}}/citas?order=fecha.asc,hora.asc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Obtener citas de un paciente
+GET {{baseUrl}}/citas?paciente_id=eq.1&order=fecha.asc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Obtener citas próximas (desde hoy)
+GET {{baseUrl}}/citas?fecha=gte.2025-12-04&order=fecha.asc,hora.asc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Obtener citas por estado
+GET {{baseUrl}}/citas?estado=eq.Pendiente&order=fecha.asc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### POST - Crear nueva cita
+POST {{baseUrl}}/citas
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "paciente_id": 1,
+  "fecha": "2025-12-20",
+  "hora": "10:00",
+  "doctor_area": "Nutrición",
+  "motivo": "Consulta de seguimiento",
+  "estado": "Pendiente"
+}
+
+###
+
+### PATCH - Actualizar cita
+PATCH {{baseUrl}}/citas?id=eq.1
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "estado": "Confirmada",
+  "motivo": "Consulta de seguimiento - Actualizada"
+}
+
+###
+
+### DELETE - Eliminar cita
+# DELETE {{baseUrl}}/citas?id=eq.1
+# apikey: {{apiKey}}
+# Authorization: Bearer {{apiKey}}
+
+### ============================================
+### VISTAS - Queries
+### ============================================
+
+### GET - Vista de pacientes completos
+GET {{baseUrl}}/v_pacientes_completo
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Vista de citas próximas
+GET {{baseUrl}}/v_citas_proximas
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+### ============================================
+### CONSULTAS AVANZADAS
+### ============================================
+
+### GET - Pacientes con diabetes
+GET {{baseUrl}}/diagnosticos?diabetes=eq.true&select=paciente_id,diabetes,otros
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Pacientes con sobrepeso u obesidad
+GET {{baseUrl}}/diagnosticos?or=(sobrepeso.eq.true,obesidad_1.eq.true,obesidad_2.eq.true,obesidad_3.eq.true)
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Pacientes con IMC alto (>25)
+GET {{baseUrl}}/antropometria?imc=gt.25&order=imc.desc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Citas de hoy
+GET {{baseUrl}}/citas?fecha=eq.2025-12-04
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+###
+
+### GET - Pacientes registrados este mes
+GET {{baseUrl}}/pacientes?fecha_registro=gte.2025-12-01&order=fecha_registro.desc
+apikey: {{apiKey}}
+Authorization: Bearer {{apiKey}}
+Content-Type: application/json
+
+### ============================================
+### RPC - Funciones personalizadas (si existen)
+### ============================================
+
+### POST - Calcular IMC (función RPC)
+# POST {{baseUrl}}/rpc/calcular_imc
+# apikey: {{apiKey}}
+# Authorization: Bearer {{apiKey}}
+# Content-Type: application/json
+#
+# {
+#   "peso": 70,
+#   "talla": 1.75
+# }

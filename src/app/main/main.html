@@ -1,4 +1,17 @@
 <div class="container">
+  <!-- Messages -->
+  @if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+  }
+  @if (successMessage()) {
+    <div class="alert alert-success">{{ successMessage() }}</div>
+  }
+  @if (isLoading()) {
+    <div class="loading-overlay">
+      <div class="spinner"></div>
+      <span>Cargando...</span>
+    </div>
+  }
 
   <!-- INFORMACIÓN DEL PACIENTE -->
   <section class="card patient-info">
@@ -6,31 +19,45 @@
     <div class="form-row">
       <div class="form-group">
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" placeholder="Juan Pérez">
+        <input type="text" id="nombre" placeholder="Juan Pérez"
+               [value]="pacienteForm().nombre"
+               (input)="updatePacienteForm('nombre', $any($event.target).value)">
       </div>
       <div class="form-group">
         <label for="numControl">Número de Control:</label>
-        <input type="text" id="numControl" placeholder="12345678">
+        <input type="text" id="numControl" placeholder="12345678"
+               [value]="pacienteForm().numero_control"
+               (input)="updatePacienteForm('numero_control', $any($event.target).value)">
       </div>
       <div class="form-group">
         <label for="sexo">Sexo:</label>
-        <select id="sexo">
+        <select id="sexo" [value]="pacienteForm().sexo || ''"
+                (change)="updatePacienteForm('sexo', $any($event.target).value || undefined)">
           <option value="">Seleccionar</option>
-          <option value="m">Masculino</option>
-          <option value="f">Femenino</option>
+          <option value="M">Masculino</option>
+          <option value="F">Femenino</option>
         </select>
       </div>
       <div class="form-group">
         <label for="carrera">Carrera o Área:</label>
-        <input type="text" id="carrera" placeholder="Sistemas">
+        <input type="text" id="carrera" placeholder="Sistemas"
+               [value]="pacienteForm().carrera"
+               (input)="updatePacienteForm('carrera', $any($event.target).value)">
       </div>
       <div class="form-group">
         <label for="edad">Edad:</label>
-        <input type="text" id="edad" class="small-input" placeholder="22">
+        <input type="number" id="edad" class="small-input" placeholder="22"
+               [value]="pacienteForm().edad"
+               (input)="updatePacienteForm('edad', +$any($event.target).value || undefined)">
       </div>
     </div>
     <div class="btn-group">
-      <button class="btn btn-save">Guardar Información</button>
+      <button class="btn btn-save" (click)="savePacienteInfo()" [disabled]="isLoading()">
+        {{ selectedPaciente() ? 'Actualizar Información' : 'Guardar Información' }}
+      </button>
+      @if (selectedPaciente()) {
+        <button class="btn btn-clear" (click)="clearForm()">Nuevo Paciente</button>
+      }
     </div>
   </section>
 
@@ -50,20 +77,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>12345</td>
-            <td>M</td>
-            <td>22</td>
-            <td>Sistemas</td>
-          </tr>
+          @for (paciente of pacientes(); track paciente.id) {
+            <tr [class.selected]="selectedPaciente()?.id === paciente.id"
+                (click)="selectPaciente(paciente)">
+              <td>{{ paciente.id }}</td>
+              <td>{{ paciente.nombre }}</td>
+              <td>{{ paciente.numero_control || '-' }}</td>
+              <td>{{ getSexoDisplay(paciente.sexo) }}</td>
+              <td>{{ paciente.edad || '-' }}</td>
+              <td>{{ paciente.carrera || '-' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center">No hay pacientes registrados</td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>
     <div class="table-actions">
-      <button class="btn btn-danger">Eliminar</button>
-      <button class="btn btn-primary">Guardar Cambios</button>
+      <button class="btn btn-danger" (click)="deletePaciente()" [disabled]="!selectedPaciente() || isLoading()">
+        Eliminar
+      </button>
+      <button class="btn btn-primary" (click)="savePacienteInfo()" [disabled]="!selectedPaciente() || isLoading()">
+        Guardar Cambios
+      </button>
     </div>
   </section>
 
@@ -71,23 +109,60 @@
   <section class="card diagnostico">
     <h2>Diagnóstico</h2>
     <div class="checkbox-group">
-      <label><input type="checkbox"> Desnutrición</label>
-      <label><input type="checkbox"> Bajo Peso</label>
-      <label><input type="checkbox"> Peso Sano</label>
-      <label><input type="checkbox"> Sobrepeso</label>
-      <label><input type="checkbox"> Obesidad 1</label>
-      <label><input type="checkbox"> Obesidad 2</label>
-      <label><input type="checkbox"> Obesidad 3</label>
-      <label><input type="checkbox"> Diabetes</label>
-      <label><input type="checkbox"> Hipertensión</label>
-      <label><input type="checkbox"> Dislipidemias</label>
-      <label><input type="checkbox"> Nefropatías</label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().desnutricion"
+               (change)="updateDiagnostico('desnutricion', $any($event.target).checked)"> Desnutrición
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().bajo_peso"
+               (change)="updateDiagnostico('bajo_peso', $any($event.target).checked)"> Bajo Peso
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().peso_sano"
+               (change)="updateDiagnostico('peso_sano', $any($event.target).checked)"> Peso Sano
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().sobrepeso"
+               (change)="updateDiagnostico('sobrepeso', $any($event.target).checked)"> Sobrepeso
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().obesidad_1"
+               (change)="updateDiagnostico('obesidad_1', $any($event.target).checked)"> Obesidad 1
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().obesidad_2"
+               (change)="updateDiagnostico('obesidad_2', $any($event.target).checked)"> Obesidad 2
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().obesidad_3"
+               (change)="updateDiagnostico('obesidad_3', $any($event.target).checked)"> Obesidad 3
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().diabetes"
+               (change)="updateDiagnostico('diabetes', $any($event.target).checked)"> Diabetes
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().hipertension"
+               (change)="updateDiagnostico('hipertension', $any($event.target).checked)"> Hipertensión
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().dislipidemias"
+               (change)="updateDiagnostico('dislipidemias', $any($event.target).checked)"> Dislipidemias
+      </label>
+      <label>
+        <input type="checkbox" [checked]="diagnostico().nefropatias"
+               (change)="updateDiagnostico('nefropatias', $any($event.target).checked)"> Nefropatías
+      </label>
       <div class="form-group">
         <label for="otros">Otros:</label>
-        <input type="text" id="otros" placeholder="Especificar...">
+        <input type="text" id="otros" placeholder="Especificar..."
+               [value]="diagnostico().otros"
+               (input)="updateDiagnostico('otros', $any($event.target).value)">
       </div>
     </div>
-    <button class="btn btn-save">Guardar Diagnóstico</button>
+    <button class="btn btn-save" (click)="saveDiagnostico()" [disabled]="!selectedPaciente() || isLoading()">
+      Guardar Diagnóstico
+    </button>
   </section>
 
   <!-- GRID DE SECCIONES -->
@@ -99,27 +174,47 @@
         <h3>Control de Expedientes</h3>
         <div class="form-group-col">
           <label for="orientaciones">Orientaciones:</label>
-          <input type="text" id="orientaciones">
+          <input type="text" id="orientaciones"
+                 [value]="controlExpediente().orientaciones"
+                 (input)="updateControlExpediente('orientaciones', $any($event.target).value)">
           <label for="hcn">HCN:</label>
-          <input type="text" id="hcn">
+          <input type="text" id="hcn"
+                 [value]="controlExpediente().hcn"
+                 (input)="updateControlExpediente('hcn', $any($event.target).value)">
           <label for="plan">Plan de Alimentación:</label>
-          <select id="plan"><option>Seleccionar plan...</option></select>
-          <label for="primeraVez">1era vez:</label>
-          <input type="text" id="primeraVez" class="small-input">
-          <label for="seguimiento">Seguimiento:</label>
-          <input type="text" id="seguimiento" class="small-input">
+          <select id="plan" [value]="controlExpediente().plan_alimentacion"
+                  (change)="updateControlExpediente('plan_alimentacion', $any($event.target).value)">
+            <option value="">Seleccionar plan...</option>
+            <option value="Plan Estándar">Plan Estándar</option>
+            <option value="Bajo en Carbohidratos">Bajo en Carbohidratos</option>
+            <option value="Alto en Proteínas">Alto en Proteínas</option>
+            <option value="Balanceado">Balanceado</option>
+            <option value="Vegetariano">Vegetariano</option>
+            <option value="Plan bajo en sodio">Plan bajo en sodio</option>
+            <option value="Plan diabetes">Plan diabetes</option>
+            <option value="Plan de recuperación">Plan de recuperación</option>
+            <option value="Personalizado">Personalizado</option>
+          </select>
+          <div class="checkbox-inline">
+            <label>
+              <input type="checkbox" [checked]="controlExpediente().primera_vez"
+                     (change)="updateControlExpediente('primera_vez', $any($event.target).checked)"> 1era vez
+            </label>
+            <label>
+              <input type="checkbox" [checked]="controlExpediente().seguimiento"
+                     (change)="updateControlExpediente('seguimiento', $any($event.target).checked)"> Seguimiento
+            </label>
+          </div>
         </div>
-        <button class="btn btn-save btn-xs">Guardar</button>
+        <button class="btn btn-save btn-xs" (click)="saveControlExpediente()" [disabled]="!selectedPaciente() || isLoading()">
+          Guardar
+        </button>
       </section>
-
-      <!-- Más secciones... (igual que antes) -->
-      <!-- (Puedes copiar y pegar las demás secciones) -->
-
     </div>
 
     <!-- COLUMNA 2 -->
     <div class="grid-col">
-      <!-- Mismo formato -->
+      <!-- Placeholder for future sections -->
     </div>
 
     <!-- ANTROPOMETRÍA (full width) -->
@@ -128,21 +223,26 @@
       <div class="form-grid-antropo">
         <div class="form-group">
           <label for="peso">Peso (kg):</label>
-          <input type="text" id="peso">
+          <input type="number" id="peso" step="0.01"
+                 [value]="antropometria().peso"
+                 (input)="updateAntropometria('peso', +$any($event.target).value || undefined)">
         </div>
         <div class="form-group">
           <label for="talla">Talla (m):</label>
-          <input type="text" id="talla">
+          <input type="number" id="talla" step="0.01" placeholder="1.75"
+                 [value]="antropometria().talla"
+                 (input)="updateAntropometria('talla', +$any($event.target).value || undefined)">
         </div>
         <div class="form-group">
           <label for="imc">IMC:</label>
-          <input type="text" id="imc" value="0.00" disabled>
+          <input type="text" id="imc" [value]="antropometria().imc || calculatedBmi()" disabled>
         </div>
-        <!-- ... más campos ... -->
       </div>
       <div class="btn-group">
-        <button class="btn btn-save">Guardar Antropometría</button>
-        <button class="btn btn-clear">Limpiar</button>
+        <button class="btn btn-save" (click)="saveAntropometria()" [disabled]="!selectedPaciente() || isLoading()">
+          Guardar Antropometría
+        </button>
+        <button class="btn btn-clear" (click)="clearAntropometria()">Limpiar</button>
       </div>
     </section>
 
